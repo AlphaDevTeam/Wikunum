@@ -1,0 +1,11 @@
+id;transaction_date;transaction_description;transaction_amount_dr;transaction_amount_cr;transaction_balance;location_id;transaction_type_id;supplier_id
+1;2019-11-23;USB alarm 1080p;65878;72410;69227;1;1;1
+2;2019-11-23;Engineer Central deposit;69317;98766;5159;2;2;2
+3;2019-11-23;Small Metal Soap Principal Towels;56794;47321;91548;3;3;3
+4;2019-11-24;Metal;73102;29734;19259;4;4;4
+5;2019-11-23;Administrator;94426;79534;47421;5;5;5
+6;2019-11-23;Refined Granite Gloves South Georgia and the South Sandwich Islands deposit;65016;59626;36469;6;6;6
+7;2019-11-24;Granite Unbranded;69628;53026;33987;7;7;7
+8;2019-11-23;streamline Kansas haptic;53840;79072;66165;8;8;8
+9;2019-11-24;Home Loan Account ADP Personal Loan Account;23295;41750;2440;9;9;9
+10;2019-11-23;Supervisor Outdoors sky blue;38396;93906;93258;10;10;10

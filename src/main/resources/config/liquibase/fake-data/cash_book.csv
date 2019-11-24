@@ -1,0 +1,11 @@
+id;transaction_date;transaction_description;transaction_amount_dr;transaction_amount_cr;transaction_balance;location_id;transaction_type_id
+1;2019-11-23;frictionless solution-oriented;37969;36305;59029;1;1
+2;2019-11-24;generating;34519;40941;77383;2;2
+3;2019-11-23;applications context-sensitive;94845;97454;76360;3;3
+4;2019-11-23;Fresh;56577;48743;98536;4;4
+5;2019-11-23;digital supply-chains;2246;51245;26867;5;5
+6;2019-11-23;Philippine Peso incentivize;21802;13935;64505;6;6
+7;2019-11-23;Liaison Tonga;17167;69122;27230;7;7
+8;2019-11-23;programming;52966;11775;81505;8;8
+9;2019-11-23;actuating India;65142;49746;82974;9;9
+10;2019-11-23;Small;14001;13688;26368;10;10
