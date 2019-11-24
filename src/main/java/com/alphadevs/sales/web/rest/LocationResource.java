@@ -1,7 +1,9 @@
 package com.alphadevs.sales.web.rest;
 
 import com.alphadevs.sales.domain.Location;
+import com.alphadevs.sales.security.SecurityUtils;
 import com.alphadevs.sales.service.LocationService;
+import com.alphadevs.sales.service.UserService;
 import com.alphadevs.sales.web.rest.errors.BadRequestAlertException;
 import com.alphadevs.sales.service.dto.LocationCriteria;
 import com.alphadevs.sales.service.LocationQueryService;
@@ -15,7 +17,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +25,12 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.alphadevs.sales.security.AuthoritiesConstants.ADMIN;
+import static com.alphadevs.sales.security.AuthoritiesConstants.USER;
 
 /**
  * REST controller for managing {@link com.alphadevs.sales.domain.Location}.
@@ -42,11 +47,12 @@ public class LocationResource {
     private String applicationName;
 
     private final LocationService locationService;
-
+    private final UserService userService;
     private final LocationQueryService locationQueryService;
 
-    public LocationResource(LocationService locationService, LocationQueryService locationQueryService) {
+    public LocationResource(LocationService locationService, UserService userService, LocationQueryService locationQueryService) {
         this.locationService = locationService;
+        this.userService = userService;
         this.locationQueryService = locationQueryService;
     }
 
@@ -102,9 +108,24 @@ public class LocationResource {
     @GetMapping("/locations")
     public ResponseEntity<List<Location>> getAllLocations(LocationCriteria criteria, Pageable pageable) {
         log.debug("REST request to get Locations by criteria: {}", criteria);
+        List<Location> locationBasedOnRole = userService.getUserLocations();
+
         Page<Location> page = locationQueryService.findByCriteria(criteria, pageable);
+        List<Location> locationBasedOnCriteria = locationQueryService.findByCriteria(criteria, pageable).getContent();
+        List<Location> filteredList = new ArrayList<>();
+        if(SecurityUtils.isCurrentUserInRole(ADMIN)){
+            filteredList = locationBasedOnCriteria;
+        }
+        else if (SecurityUtils.isCurrentUserInRole(USER) && locationBasedOnRole != null && locationBasedOnCriteria != null){
+            for (Location location : locationBasedOnRole) {
+                if(location != null && locationBasedOnCriteria.contains(location)){
+                    filteredList.add(location);
+                }
+            }
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        return ResponseEntity.ok().headers(headers).body(filteredList);
+
     }
 
     /**

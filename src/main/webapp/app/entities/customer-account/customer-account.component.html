@@ -40,17 +40,17 @@
                 <td>{{customerAccount.transactionBalance}}</td>
                 <td>
                     <div *ngIf="customerAccount.location">
-                        <a [routerLink]="['/location', customerAccount.location?.id, 'view' ]" >{{customerAccount.location?.id}}</a>
+                        <a [routerLink]="['/location', customerAccount.location?.id, 'view' ]" >{{customerAccount.location?.locationCode}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="customerAccount.transactionType">
-                        <a [routerLink]="['/transaction-type', customerAccount.transactionType?.id, 'view' ]" >{{customerAccount.transactionType?.id}}</a>
+                        <a [routerLink]="['/transaction-type', customerAccount.transactionType?.id, 'view' ]" >{{customerAccount.transactionType?.transactionypeCode}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="customerAccount.customer">
-                        <a [routerLink]="['/customer', customerAccount.customer?.id, 'view' ]" >{{customerAccount.customer?.id}}</a>
+                        <a [routerLink]="['/customer', customerAccount.customer?.id, 'view' ]" >{{customerAccount.customer?.customerCode}}</a>
                     </div>
                 </td>
                 <td class="text-right">

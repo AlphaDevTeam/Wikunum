@@ -20,13 +20,13 @@
                 <dt><span>Related Product</span></dt>
                 <dd>
                     <div *ngIf="designs.relatedProduct">
-                        <a [routerLink]="['/products', designs.relatedProduct?.id, 'view']">{{designs.relatedProduct?.id}}</a>
+                        <a [routerLink]="['/products', designs.relatedProduct?.id, 'view']">{{designs.relatedProduct?.productCode}}</a>
                     </div>
                 </dd>
                 <dt><span>Location</span></dt>
                 <dd>
                     <div *ngIf="designs.location">
-                        <a [routerLink]="['/location', designs.location?.id, 'view']">{{designs.location?.id}}</a>
+                        <a [routerLink]="['/location', designs.location?.id, 'view']">{{designs.location?.locationCode}}</a>
                     </div>
                 </dd>
             </dl>

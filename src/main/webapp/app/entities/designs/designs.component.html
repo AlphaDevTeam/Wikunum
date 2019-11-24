@@ -35,12 +35,12 @@
                 <td>{{designs.designPrefix}}</td>
                 <td>
                     <div *ngIf="designs.relatedProduct">
-                        <a [routerLink]="['/products', designs.relatedProduct?.id, 'view' ]" >{{designs.relatedProduct?.id}}</a>
+                        <a [routerLink]="['/products', designs.relatedProduct?.id, 'view' ]" >{{designs.relatedProduct?.productCode}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="designs.location">
-                        <a [routerLink]="['/location', designs.location?.id, 'view' ]" >{{designs.location?.id}}</a>
+                        <a [routerLink]="['/location', designs.location?.id, 'view' ]" >{{designs.location?.locationCode}}</a>
                     </div>
                 </td>
                 <td class="text-right">

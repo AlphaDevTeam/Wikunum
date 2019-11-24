@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -38,7 +39,7 @@ public class GoodsReceipt implements Serializable {
     @Column(name = "po_number")
     private String poNumber;
 
-    @OneToMany(mappedBy = "grn")
+    @OneToMany(mappedBy = "grn",fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<GoodsReceiptDetails> details = new HashSet<>();
 

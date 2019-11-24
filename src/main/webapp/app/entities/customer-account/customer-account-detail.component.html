@@ -28,19 +28,19 @@
                 <dt><span>Location</span></dt>
                 <dd>
                     <div *ngIf="customerAccount.location">
-                        <a [routerLink]="['/location', customerAccount.location?.id, 'view']">{{customerAccount.location?.id}}</a>
+                        <a [routerLink]="['/location', customerAccount.location?.id, 'view']">{{customerAccount.location?.locationCoded}}</a>
                     </div>
                 </dd>
                 <dt><span>Transaction Type</span></dt>
                 <dd>
                     <div *ngIf="customerAccount.transactionType">
-                        <a [routerLink]="['/transaction-type', customerAccount.transactionType?.id, 'view']">{{customerAccount.transactionType?.id}}</a>
+                        <a [routerLink]="['/transaction-type', customerAccount.transactionType?.id, 'view']">{{customerAccount.transactionType?.transactionypeCode}}</a>
                     </div>
                 </dd>
                 <dt><span>Customer</span></dt>
                 <dd>
                     <div *ngIf="customerAccount.customer">
-                        <a [routerLink]="['/customer', customerAccount.customer?.id, 'view']">{{customerAccount.customer?.id}}</a>
+                        <a [routerLink]="['/customer', customerAccount.customer?.id, 'view']">{{customerAccount.customer?.customerCode}}</a>
                     </div>
                 </dd>
             </dl>

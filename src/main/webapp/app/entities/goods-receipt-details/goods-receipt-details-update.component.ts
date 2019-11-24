@@ -23,9 +23,10 @@ export class GoodsReceiptDetailsUpdateComponent implements OnInit {
   isSaving: boolean;
 
   items: IItems[];
-
+  grnList: IGoodsReceipt[];
+  virtualGoodsReceipts: IGoodsReceipt[];
   storagebins: IStorageBin[];
-
+  editField: number;
   goodsreceipts: IGoodsReceipt[];
 
   editForm = this.fb.group({
@@ -49,6 +50,7 @@ export class GoodsReceiptDetailsUpdateComponent implements OnInit {
 
   ngOnInit() {
     this.isSaving = false;
+    this.grnList = [];
     this.activatedRoute.data.subscribe(({ goodsReceiptDetails }) => {
       this.updateForm(goodsReceiptDetails);
     });
@@ -67,6 +69,21 @@ export class GoodsReceiptDetailsUpdateComponent implements OnInit {
         (res: HttpResponse<IGoodsReceipt[]>) => (this.goodsreceipts = res.body),
         (res: HttpErrorResponse) => this.onError(res.message)
       );
+  }
+
+  addItem() {
+    const goodsReceiptDetails = this.createFromForm();
+    this.grnList.push(goodsReceiptDetails);
+    this.virtualGoodsReceipts = this.grnList;
+  }
+
+  updateList(id: number, property: string, event: any) {
+    const editField = event.target.textContent;
+    this.virtualGoodsReceipts[id][property] = editField;
+  }
+
+  changeValue(id: number, property: string, event: any) {
+    this.editField = event.target.textContent;
   }
 
   updateForm(goodsReceiptDetails: IGoodsReceiptDetails) {

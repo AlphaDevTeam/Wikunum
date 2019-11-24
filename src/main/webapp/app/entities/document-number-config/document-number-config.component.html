@@ -35,12 +35,12 @@
                 <td>{{documentNumberConfig.currentNumber}}</td>
                 <td>
                     <div *ngIf="documentNumberConfig.document">
-                        <a [routerLink]="['/document-type', documentNumberConfig.document?.id, 'view' ]" >{{documentNumberConfig.document?.id}}</a>
+                        <a [routerLink]="['/document-type', documentNumberConfig.document?.id, 'view' ]" >{{documentNumberConfig.document?.documentTypeCode}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="documentNumberConfig.location">
-                        <a [routerLink]="['/location', documentNumberConfig.location?.id, 'view' ]" >{{documentNumberConfig.location?.id}}</a>
+                        <a [routerLink]="['/location', documentNumberConfig.location?.id, 'view' ]" >{{documentNumberConfig.location?.locationCode}}</a>
                     </div>
                 </td>
                 <td class="text-right">
