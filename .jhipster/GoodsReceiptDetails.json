@@ -3,7 +3,7 @@
     "fields": [
         {
             "fieldName": "grnQty",
-            "fieldType": "String",
+            "fieldType": "Double",
             "fieldValidateRules": [
                 "required"
             ]
@@ -38,7 +38,7 @@
             "otherEntityField": "id"
         }
     ],
-    "changelogDate": "20191124122543",
+    "changelogDate": "20191124122544",
     "javadoc": "GRN Details Entity.\\n@author Mihindu Karunarathne.",
     "entityTableName": "goods_receipt_details",
     "dto": "no",

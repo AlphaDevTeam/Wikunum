@@ -40,8 +40,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = WikunumApp.class)
 public class GoodsReceiptDetailsResourceIT {
 
-    private static final String DEFAULT_GRN_QTY = "AAAAAAAAAA";
-    private static final String UPDATED_GRN_QTY = "BBBBBBBBBB";
+    private static final Double DEFAULT_GRN_QTY = 1D;
+    private static final Double UPDATED_GRN_QTY = 2D;
+    private static final Double SMALLER_GRN_QTY = 1D - 1D;
 
     private static final BigDecimal DEFAULT_REVISED_ITEM_COST = new BigDecimal(1);
     private static final BigDecimal UPDATED_REVISED_ITEM_COST = new BigDecimal(2);
@@ -225,7 +226,7 @@ public class GoodsReceiptDetailsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(goodsReceiptDetails.getId().intValue())))
-            .andExpect(jsonPath("$.[*].grnQty").value(hasItem(DEFAULT_GRN_QTY)))
+            .andExpect(jsonPath("$.[*].grnQty").value(hasItem(DEFAULT_GRN_QTY.doubleValue())))
             .andExpect(jsonPath("$.[*].revisedItemCost").value(hasItem(DEFAULT_REVISED_ITEM_COST.intValue())));
     }
     
@@ -240,7 +241,7 @@ public class GoodsReceiptDetailsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(goodsReceiptDetails.getId().intValue()))
-            .andExpect(jsonPath("$.grnQty").value(DEFAULT_GRN_QTY))
+            .andExpect(jsonPath("$.grnQty").value(DEFAULT_GRN_QTY.doubleValue()))
             .andExpect(jsonPath("$.revisedItemCost").value(DEFAULT_REVISED_ITEM_COST.intValue()));
     }
 
@@ -315,30 +316,57 @@ public class GoodsReceiptDetailsResourceIT {
         // Get all the goodsReceiptDetailsList where grnQty is null
         defaultGoodsReceiptDetailsShouldNotBeFound("grnQty.specified=false");
     }
-                @Test
+
+    @Test
     @Transactional
-    public void getAllGoodsReceiptDetailsByGrnQtyContainsSomething() throws Exception {
+    public void getAllGoodsReceiptDetailsByGrnQtyIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         goodsReceiptDetailsRepository.saveAndFlush(goodsReceiptDetails);
 
-        // Get all the goodsReceiptDetailsList where grnQty contains DEFAULT_GRN_QTY
-        defaultGoodsReceiptDetailsShouldBeFound("grnQty.contains=" + DEFAULT_GRN_QTY);
+        // Get all the goodsReceiptDetailsList where grnQty is greater than or equal to DEFAULT_GRN_QTY
+        defaultGoodsReceiptDetailsShouldBeFound("grnQty.greaterThanOrEqual=" + DEFAULT_GRN_QTY);
 
-        // Get all the goodsReceiptDetailsList where grnQty contains UPDATED_GRN_QTY
-        defaultGoodsReceiptDetailsShouldNotBeFound("grnQty.contains=" + UPDATED_GRN_QTY);
+        // Get all the goodsReceiptDetailsList where grnQty is greater than or equal to UPDATED_GRN_QTY
+        defaultGoodsReceiptDetailsShouldNotBeFound("grnQty.greaterThanOrEqual=" + UPDATED_GRN_QTY);
     }
 
     @Test
     @Transactional
-    public void getAllGoodsReceiptDetailsByGrnQtyNotContainsSomething() throws Exception {
+    public void getAllGoodsReceiptDetailsByGrnQtyIsLessThanOrEqualToSomething() throws Exception {
         // Initialize the database
         goodsReceiptDetailsRepository.saveAndFlush(goodsReceiptDetails);
 
-        // Get all the goodsReceiptDetailsList where grnQty does not contain DEFAULT_GRN_QTY
-        defaultGoodsReceiptDetailsShouldNotBeFound("grnQty.doesNotContain=" + DEFAULT_GRN_QTY);
+        // Get all the goodsReceiptDetailsList where grnQty is less than or equal to DEFAULT_GRN_QTY
+        defaultGoodsReceiptDetailsShouldBeFound("grnQty.lessThanOrEqual=" + DEFAULT_GRN_QTY);
 
-        // Get all the goodsReceiptDetailsList where grnQty does not contain UPDATED_GRN_QTY
-        defaultGoodsReceiptDetailsShouldBeFound("grnQty.doesNotContain=" + UPDATED_GRN_QTY);
+        // Get all the goodsReceiptDetailsList where grnQty is less than or equal to SMALLER_GRN_QTY
+        defaultGoodsReceiptDetailsShouldNotBeFound("grnQty.lessThanOrEqual=" + SMALLER_GRN_QTY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllGoodsReceiptDetailsByGrnQtyIsLessThanSomething() throws Exception {
+        // Initialize the database
+        goodsReceiptDetailsRepository.saveAndFlush(goodsReceiptDetails);
+
+        // Get all the goodsReceiptDetailsList where grnQty is less than DEFAULT_GRN_QTY
+        defaultGoodsReceiptDetailsShouldNotBeFound("grnQty.lessThan=" + DEFAULT_GRN_QTY);
+
+        // Get all the goodsReceiptDetailsList where grnQty is less than UPDATED_GRN_QTY
+        defaultGoodsReceiptDetailsShouldBeFound("grnQty.lessThan=" + UPDATED_GRN_QTY);
+    }
+
+    @Test
+    @Transactional
+    public void getAllGoodsReceiptDetailsByGrnQtyIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        goodsReceiptDetailsRepository.saveAndFlush(goodsReceiptDetails);
+
+        // Get all the goodsReceiptDetailsList where grnQty is greater than DEFAULT_GRN_QTY
+        defaultGoodsReceiptDetailsShouldNotBeFound("grnQty.greaterThan=" + DEFAULT_GRN_QTY);
+
+        // Get all the goodsReceiptDetailsList where grnQty is greater than SMALLER_GRN_QTY
+        defaultGoodsReceiptDetailsShouldBeFound("grnQty.greaterThan=" + SMALLER_GRN_QTY);
     }
 
 
@@ -506,7 +534,7 @@ public class GoodsReceiptDetailsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(goodsReceiptDetails.getId().intValue())))
-            .andExpect(jsonPath("$.[*].grnQty").value(hasItem(DEFAULT_GRN_QTY)))
+            .andExpect(jsonPath("$.[*].grnQty").value(hasItem(DEFAULT_GRN_QTY.doubleValue())))
             .andExpect(jsonPath("$.[*].revisedItemCost").value(hasItem(DEFAULT_REVISED_ITEM_COST.intValue())));
 
         // Check, that the count call also returns 1

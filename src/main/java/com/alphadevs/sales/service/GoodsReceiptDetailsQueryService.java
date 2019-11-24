@@ -86,7 +86,7 @@ public class GoodsReceiptDetailsQueryService extends QueryService<GoodsReceiptDe
                 specification = specification.and(buildRangeSpecification(criteria.getId(), GoodsReceiptDetails_.id));
             }
             if (criteria.getGrnQty() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getGrnQty(), GoodsReceiptDetails_.grnQty));
+                specification = specification.and(buildRangeSpecification(criteria.getGrnQty(), GoodsReceiptDetails_.grnQty));
             }
             if (criteria.getRevisedItemCost() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getRevisedItemCost(), GoodsReceiptDetails_.revisedItemCost));

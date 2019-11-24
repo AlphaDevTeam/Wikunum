@@ -92,6 +92,14 @@ public class CustomerAccountBalanceQueryService extends QueryService<CustomerAcc
                 specification = specification.and(buildSpecification(criteria.getLocationId(),
                     root -> root.join(CustomerAccountBalance_.location, JoinType.LEFT).get(Location_.id)));
             }
+            if (criteria.getCustomerId() != null) {
+                specification = specification.and(buildSpecification(criteria.getCustomerId(),
+                    root -> root.join(CustomerAccountBalance_.customer, JoinType.LEFT).get(Customer_.id)));
+            }
+            if (criteria.getTransactionTypeId() != null) {
+                specification = specification.and(buildSpecification(criteria.getTransactionTypeId(),
+                    root -> root.join(CustomerAccountBalance_.transactionType, JoinType.LEFT).get(TransactionType_.id)));
+            }
         }
         return specification;
     }

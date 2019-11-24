@@ -3,6 +3,8 @@ package com.alphadevs.sales.web.rest;
 import com.alphadevs.sales.WikunumApp;
 import com.alphadevs.sales.domain.CustomerAccountBalance;
 import com.alphadevs.sales.domain.Location;
+import com.alphadevs.sales.domain.Customer;
+import com.alphadevs.sales.domain.TransactionType;
 import com.alphadevs.sales.repository.CustomerAccountBalanceRepository;
 import com.alphadevs.sales.service.CustomerAccountBalanceService;
 import com.alphadevs.sales.web.rest.errors.ExceptionTranslator;
@@ -101,6 +103,26 @@ public class CustomerAccountBalanceResourceIT {
             location = TestUtil.findAll(em, Location.class).get(0);
         }
         customerAccountBalance.setLocation(location);
+        // Add required entity
+        Customer customer;
+        if (TestUtil.findAll(em, Customer.class).isEmpty()) {
+            customer = CustomerResourceIT.createEntity(em);
+            em.persist(customer);
+            em.flush();
+        } else {
+            customer = TestUtil.findAll(em, Customer.class).get(0);
+        }
+        customerAccountBalance.setCustomer(customer);
+        // Add required entity
+        TransactionType transactionType;
+        if (TestUtil.findAll(em, TransactionType.class).isEmpty()) {
+            transactionType = TransactionTypeResourceIT.createEntity(em);
+            em.persist(transactionType);
+            em.flush();
+        } else {
+            transactionType = TestUtil.findAll(em, TransactionType.class).get(0);
+        }
+        customerAccountBalance.setTransactionType(transactionType);
         return customerAccountBalance;
     }
     /**
@@ -122,6 +144,26 @@ public class CustomerAccountBalanceResourceIT {
             location = TestUtil.findAll(em, Location.class).get(0);
         }
         customerAccountBalance.setLocation(location);
+        // Add required entity
+        Customer customer;
+        if (TestUtil.findAll(em, Customer.class).isEmpty()) {
+            customer = CustomerResourceIT.createUpdatedEntity(em);
+            em.persist(customer);
+            em.flush();
+        } else {
+            customer = TestUtil.findAll(em, Customer.class).get(0);
+        }
+        customerAccountBalance.setCustomer(customer);
+        // Add required entity
+        TransactionType transactionType;
+        if (TestUtil.findAll(em, TransactionType.class).isEmpty()) {
+            transactionType = TransactionTypeResourceIT.createUpdatedEntity(em);
+            em.persist(transactionType);
+            em.flush();
+        } else {
+            transactionType = TestUtil.findAll(em, TransactionType.class).get(0);
+        }
+        customerAccountBalance.setTransactionType(transactionType);
         return customerAccountBalance;
     }
 
@@ -352,6 +394,38 @@ public class CustomerAccountBalanceResourceIT {
 
         // Get all the customerAccountBalanceList where location equals to locationId + 1
         defaultCustomerAccountBalanceShouldNotBeFound("locationId.equals=" + (locationId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCustomerAccountBalancesByCustomerIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        Customer customer = customerAccountBalance.getCustomer();
+        customerAccountBalanceRepository.saveAndFlush(customerAccountBalance);
+        Long customerId = customer.getId();
+
+        // Get all the customerAccountBalanceList where customer equals to customerId
+        defaultCustomerAccountBalanceShouldBeFound("customerId.equals=" + customerId);
+
+        // Get all the customerAccountBalanceList where customer equals to customerId + 1
+        defaultCustomerAccountBalanceShouldNotBeFound("customerId.equals=" + (customerId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllCustomerAccountBalancesByTransactionTypeIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        TransactionType transactionType = customerAccountBalance.getTransactionType();
+        customerAccountBalanceRepository.saveAndFlush(customerAccountBalance);
+        Long transactionTypeId = transactionType.getId();
+
+        // Get all the customerAccountBalanceList where transactionType equals to transactionTypeId
+        defaultCustomerAccountBalanceShouldBeFound("transactionTypeId.equals=" + transactionTypeId);
+
+        // Get all the customerAccountBalanceList where transactionType equals to transactionTypeId + 1
+        defaultCustomerAccountBalanceShouldNotBeFound("transactionTypeId.equals=" + (transactionTypeId + 1));
     }
 
     /**

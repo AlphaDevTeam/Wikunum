@@ -9,7 +9,38 @@
             ]
         }
     ],
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "location",
+            "otherEntityName": "location",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "supplierAccountBalance"
+        },
+        {
+            "relationshipName": "transactionType",
+            "otherEntityName": "transactionType",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "supplierAccountBalance"
+        },
+        {
+            "relationshipName": "supplier",
+            "otherEntityName": "supplier",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "supplierAccountBalance"
+        }
+    ],
     "changelogDate": "20191124122556",
     "javadoc": "SupplierAccount Balance Entity.\\n@author Mihindu Karunarathne.",
     "entityTableName": "supplier_account_balance",
@@ -20,5 +51,7 @@
     "fluentMethods": true,
     "readOnly": false,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": "*",
+    "searchEngine": false,
+    "databaseType": "sql"
 }

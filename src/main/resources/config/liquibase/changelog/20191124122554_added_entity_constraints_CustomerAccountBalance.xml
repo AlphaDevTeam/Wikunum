@@ -14,5 +14,17 @@
                                  referencedColumnNames="id"
                                  referencedTableName="location"/>
 
+        <addForeignKeyConstraint baseColumnNames="customer_id"
+                                 baseTableName="customer_account_balance"
+                                 constraintName="fk_customer_account_balance_customer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="customer"/>
+
+        <addForeignKeyConstraint baseColumnNames="transaction_type_id"
+                                 baseTableName="customer_account_balance"
+                                 constraintName="fk_customer_account_balance_transaction_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_type"/>
+
     </changeSet>
 </databaseChangeLog>

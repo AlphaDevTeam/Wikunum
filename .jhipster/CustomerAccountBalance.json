@@ -17,6 +17,26 @@
             "relationshipValidateRules": "required",
             "relationshipName": "location",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "customer",
+            "otherEntityName": "customer",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "customerAccountBalance"
+        },
+        {
+            "relationshipName": "transactionType",
+            "otherEntityName": "transactionType",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "customerAccountBalance"
         }
     ],
     "changelogDate": "20191124122554",
@@ -29,5 +49,7 @@
     "fluentMethods": true,
     "readOnly": false,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": "*",
+    "searchEngine": false,
+    "databaseType": "sql"
 }

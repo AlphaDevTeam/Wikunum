@@ -29,12 +29,21 @@ public class SupplierAccountBalanceCriteria implements Serializable, Criteria {
 
     private BigDecimalFilter balance;
 
+    private LongFilter locationId;
+
+    private LongFilter transactionTypeId;
+
+    private LongFilter supplierId;
+
     public SupplierAccountBalanceCriteria(){
     }
 
     public SupplierAccountBalanceCriteria(SupplierAccountBalanceCriteria other){
         this.id = other.id == null ? null : other.id.copy();
         this.balance = other.balance == null ? null : other.balance.copy();
+        this.locationId = other.locationId == null ? null : other.locationId.copy();
+        this.transactionTypeId = other.transactionTypeId == null ? null : other.transactionTypeId.copy();
+        this.supplierId = other.supplierId == null ? null : other.supplierId.copy();
     }
 
     @Override
@@ -58,6 +67,30 @@ public class SupplierAccountBalanceCriteria implements Serializable, Criteria {
         this.balance = balance;
     }
 
+    public LongFilter getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(LongFilter locationId) {
+        this.locationId = locationId;
+    }
+
+    public LongFilter getTransactionTypeId() {
+        return transactionTypeId;
+    }
+
+    public void setTransactionTypeId(LongFilter transactionTypeId) {
+        this.transactionTypeId = transactionTypeId;
+    }
+
+    public LongFilter getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(LongFilter supplierId) {
+        this.supplierId = supplierId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -70,14 +103,20 @@ public class SupplierAccountBalanceCriteria implements Serializable, Criteria {
         final SupplierAccountBalanceCriteria that = (SupplierAccountBalanceCriteria) o;
         return
             Objects.equals(id, that.id) &&
-            Objects.equals(balance, that.balance);
+            Objects.equals(balance, that.balance) &&
+            Objects.equals(locationId, that.locationId) &&
+            Objects.equals(transactionTypeId, that.transactionTypeId) &&
+            Objects.equals(supplierId, that.supplierId);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
         id,
-        balance
+        balance,
+        locationId,
+        transactionTypeId,
+        supplierId
         );
     }
 
@@ -86,6 +125,9 @@ public class SupplierAccountBalanceCriteria implements Serializable, Criteria {
         return "SupplierAccountBalanceCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (balance != null ? "balance=" + balance + ", " : "") +
+                (locationId != null ? "locationId=" + locationId + ", " : "") +
+                (transactionTypeId != null ? "transactionTypeId=" + transactionTypeId + ", " : "") +
+                (supplierId != null ? "supplierId=" + supplierId + ", " : "") +
             "}";
     }
 

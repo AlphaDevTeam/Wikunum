@@ -20,6 +20,9 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="balance"><span>Balance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="location.id"><span>Location</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="transactionType.id"><span>Transaction Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="supplier.id"><span>Supplier</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -27,6 +30,21 @@
             <tr *ngFor="let supplierAccountBalance of supplierAccountBalances ;trackBy: trackId">
                 <td><a [routerLink]="['/supplier-account-balance', supplierAccountBalance.id, 'view' ]">{{supplierAccountBalance.id}}</a></td>
                 <td>{{supplierAccountBalance.balance}}</td>
+                <td>
+                    <div *ngIf="supplierAccountBalance.location">
+                        <a [routerLink]="['/location', supplierAccountBalance.location?.id, 'view' ]" >{{supplierAccountBalance.location?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="supplierAccountBalance.transactionType">
+                        <a [routerLink]="['/transaction-type', supplierAccountBalance.transactionType?.id, 'view' ]" >{{supplierAccountBalance.transactionType?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="supplierAccountBalance.supplier">
+                        <a [routerLink]="['/supplier', supplierAccountBalance.supplier?.id, 'view' ]" >{{supplierAccountBalance.supplier?.id}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

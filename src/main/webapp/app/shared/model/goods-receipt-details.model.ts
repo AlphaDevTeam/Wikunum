@@ -4,7 +4,7 @@ import { IGoodsReceipt } from 'app/shared/model/goods-receipt.model';
 
 export interface IGoodsReceiptDetails {
   id?: number;
-  grnQty?: string;
+  grnQty?: number;
   revisedItemCost?: number;
   item?: IItems;
   storageBin?: IStorageBin;
@@ -14,7 +14,7 @@ export interface IGoodsReceiptDetails {
 export class GoodsReceiptDetails implements IGoodsReceiptDetails {
   constructor(
     public id?: number,
-    public grnQty?: string,
+    public grnQty?: number,
     public revisedItemCost?: number,
     public item?: IItems,
     public storageBin?: IStorageBin,

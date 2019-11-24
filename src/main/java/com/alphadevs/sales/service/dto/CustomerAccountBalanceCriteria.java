@@ -31,6 +31,10 @@ public class CustomerAccountBalanceCriteria implements Serializable, Criteria {
 
     private LongFilter locationId;
 
+    private LongFilter customerId;
+
+    private LongFilter transactionTypeId;
+
     public CustomerAccountBalanceCriteria(){
     }
 
@@ -38,6 +42,8 @@ public class CustomerAccountBalanceCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.balance = other.balance == null ? null : other.balance.copy();
         this.locationId = other.locationId == null ? null : other.locationId.copy();
+        this.customerId = other.customerId == null ? null : other.customerId.copy();
+        this.transactionTypeId = other.transactionTypeId == null ? null : other.transactionTypeId.copy();
     }
 
     @Override
@@ -69,6 +75,22 @@ public class CustomerAccountBalanceCriteria implements Serializable, Criteria {
         this.locationId = locationId;
     }
 
+    public LongFilter getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(LongFilter customerId) {
+        this.customerId = customerId;
+    }
+
+    public LongFilter getTransactionTypeId() {
+        return transactionTypeId;
+    }
+
+    public void setTransactionTypeId(LongFilter transactionTypeId) {
+        this.transactionTypeId = transactionTypeId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -82,7 +104,9 @@ public class CustomerAccountBalanceCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(balance, that.balance) &&
-            Objects.equals(locationId, that.locationId);
+            Objects.equals(locationId, that.locationId) &&
+            Objects.equals(customerId, that.customerId) &&
+            Objects.equals(transactionTypeId, that.transactionTypeId);
     }
 
     @Override
@@ -90,7 +114,9 @@ public class CustomerAccountBalanceCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         balance,
-        locationId
+        locationId,
+        customerId,
+        transactionTypeId
         );
     }
 
@@ -100,6 +126,8 @@ public class CustomerAccountBalanceCriteria implements Serializable, Criteria {
                 (id != null ? "id=" + id + ", " : "") +
                 (balance != null ? "balance=" + balance + ", " : "") +
                 (locationId != null ? "locationId=" + locationId + ", " : "") +
+                (customerId != null ? "customerId=" + customerId + ", " : "") +
+                (transactionTypeId != null ? "transactionTypeId=" + transactionTypeId + ", " : "") +
             "}";
     }
 

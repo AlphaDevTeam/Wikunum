@@ -10,6 +10,10 @@ import { ICustomerAccountBalance, CustomerAccountBalance } from 'app/shared/mode
 import { CustomerAccountBalanceService } from './customer-account-balance.service';
 import { ILocation } from 'app/shared/model/location.model';
 import { LocationService } from 'app/entities/location/location.service';
+import { ICustomer } from 'app/shared/model/customer.model';
+import { CustomerService } from 'app/entities/customer/customer.service';
+import { ITransactionType } from 'app/shared/model/transaction-type.model';
+import { TransactionTypeService } from 'app/entities/transaction-type/transaction-type.service';
 
 @Component({
   selector: 'jhi-customer-account-balance-update',
@@ -20,16 +24,24 @@ export class CustomerAccountBalanceUpdateComponent implements OnInit {
 
   locations: ILocation[];
 
+  customers: ICustomer[];
+
+  transactiontypes: ITransactionType[];
+
   editForm = this.fb.group({
     id: [],
     balance: [null, [Validators.required]],
-    location: [null, Validators.required]
+    location: [null, Validators.required],
+    customer: [null, Validators.required],
+    transactionType: [null, Validators.required]
   });
 
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected customerAccountBalanceService: CustomerAccountBalanceService,
     protected locationService: LocationService,
+    protected customerService: CustomerService,
+    protected transactionTypeService: TransactionTypeService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -42,13 +54,24 @@ export class CustomerAccountBalanceUpdateComponent implements OnInit {
     this.locationService
       .query()
       .subscribe((res: HttpResponse<ILocation[]>) => (this.locations = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.customerService
+      .query()
+      .subscribe((res: HttpResponse<ICustomer[]>) => (this.customers = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.transactionTypeService
+      .query()
+      .subscribe(
+        (res: HttpResponse<ITransactionType[]>) => (this.transactiontypes = res.body),
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
   }
 
   updateForm(customerAccountBalance: ICustomerAccountBalance) {
     this.editForm.patchValue({
       id: customerAccountBalance.id,
       balance: customerAccountBalance.balance,
-      location: customerAccountBalance.location
+      location: customerAccountBalance.location,
+      customer: customerAccountBalance.customer,
+      transactionType: customerAccountBalance.transactionType
     });
   }
 
@@ -71,7 +94,9 @@ export class CustomerAccountBalanceUpdateComponent implements OnInit {
       ...new CustomerAccountBalance(),
       id: this.editForm.get(['id']).value,
       balance: this.editForm.get(['balance']).value,
-      location: this.editForm.get(['location']).value
+      location: this.editForm.get(['location']).value,
+      customer: this.editForm.get(['customer']).value,
+      transactionType: this.editForm.get(['transactionType']).value
     };
   }
 
@@ -92,6 +117,14 @@ export class CustomerAccountBalanceUpdateComponent implements OnInit {
   }
 
   trackLocationById(index: number, item: ILocation) {
+    return item.id;
+  }
+
+  trackCustomerById(index: number, item: ICustomer) {
+    return item.id;
+  }
+
+  trackTransactionTypeById(index: number, item: ITransactionType) {
     return item.id;
   }
 }

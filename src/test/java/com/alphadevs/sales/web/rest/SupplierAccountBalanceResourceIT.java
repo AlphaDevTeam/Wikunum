@@ -2,6 +2,9 @@ package com.alphadevs.sales.web.rest;
 
 import com.alphadevs.sales.WikunumApp;
 import com.alphadevs.sales.domain.SupplierAccountBalance;
+import com.alphadevs.sales.domain.Location;
+import com.alphadevs.sales.domain.TransactionType;
+import com.alphadevs.sales.domain.Supplier;
 import com.alphadevs.sales.repository.SupplierAccountBalanceRepository;
 import com.alphadevs.sales.service.SupplierAccountBalanceService;
 import com.alphadevs.sales.web.rest.errors.ExceptionTranslator;
@@ -90,6 +93,36 @@ public class SupplierAccountBalanceResourceIT {
     public static SupplierAccountBalance createEntity(EntityManager em) {
         SupplierAccountBalance supplierAccountBalance = new SupplierAccountBalance()
             .balance(DEFAULT_BALANCE);
+        // Add required entity
+        Location location;
+        if (TestUtil.findAll(em, Location.class).isEmpty()) {
+            location = LocationResourceIT.createEntity(em);
+            em.persist(location);
+            em.flush();
+        } else {
+            location = TestUtil.findAll(em, Location.class).get(0);
+        }
+        supplierAccountBalance.setLocation(location);
+        // Add required entity
+        TransactionType transactionType;
+        if (TestUtil.findAll(em, TransactionType.class).isEmpty()) {
+            transactionType = TransactionTypeResourceIT.createEntity(em);
+            em.persist(transactionType);
+            em.flush();
+        } else {
+            transactionType = TestUtil.findAll(em, TransactionType.class).get(0);
+        }
+        supplierAccountBalance.setTransactionType(transactionType);
+        // Add required entity
+        Supplier supplier;
+        if (TestUtil.findAll(em, Supplier.class).isEmpty()) {
+            supplier = SupplierResourceIT.createEntity(em);
+            em.persist(supplier);
+            em.flush();
+        } else {
+            supplier = TestUtil.findAll(em, Supplier.class).get(0);
+        }
+        supplierAccountBalance.setSupplier(supplier);
         return supplierAccountBalance;
     }
     /**
@@ -101,6 +134,36 @@ public class SupplierAccountBalanceResourceIT {
     public static SupplierAccountBalance createUpdatedEntity(EntityManager em) {
         SupplierAccountBalance supplierAccountBalance = new SupplierAccountBalance()
             .balance(UPDATED_BALANCE);
+        // Add required entity
+        Location location;
+        if (TestUtil.findAll(em, Location.class).isEmpty()) {
+            location = LocationResourceIT.createUpdatedEntity(em);
+            em.persist(location);
+            em.flush();
+        } else {
+            location = TestUtil.findAll(em, Location.class).get(0);
+        }
+        supplierAccountBalance.setLocation(location);
+        // Add required entity
+        TransactionType transactionType;
+        if (TestUtil.findAll(em, TransactionType.class).isEmpty()) {
+            transactionType = TransactionTypeResourceIT.createUpdatedEntity(em);
+            em.persist(transactionType);
+            em.flush();
+        } else {
+            transactionType = TestUtil.findAll(em, TransactionType.class).get(0);
+        }
+        supplierAccountBalance.setTransactionType(transactionType);
+        // Add required entity
+        Supplier supplier;
+        if (TestUtil.findAll(em, Supplier.class).isEmpty()) {
+            supplier = SupplierResourceIT.createUpdatedEntity(em);
+            em.persist(supplier);
+            em.flush();
+        } else {
+            supplier = TestUtil.findAll(em, Supplier.class).get(0);
+        }
+        supplierAccountBalance.setSupplier(supplier);
         return supplierAccountBalance;
     }
 
@@ -315,6 +378,54 @@ public class SupplierAccountBalanceResourceIT {
 
         // Get all the supplierAccountBalanceList where balance is greater than SMALLER_BALANCE
         defaultSupplierAccountBalanceShouldBeFound("balance.greaterThan=" + SMALLER_BALANCE);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSupplierAccountBalancesByLocationIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        Location location = supplierAccountBalance.getLocation();
+        supplierAccountBalanceRepository.saveAndFlush(supplierAccountBalance);
+        Long locationId = location.getId();
+
+        // Get all the supplierAccountBalanceList where location equals to locationId
+        defaultSupplierAccountBalanceShouldBeFound("locationId.equals=" + locationId);
+
+        // Get all the supplierAccountBalanceList where location equals to locationId + 1
+        defaultSupplierAccountBalanceShouldNotBeFound("locationId.equals=" + (locationId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSupplierAccountBalancesByTransactionTypeIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        TransactionType transactionType = supplierAccountBalance.getTransactionType();
+        supplierAccountBalanceRepository.saveAndFlush(supplierAccountBalance);
+        Long transactionTypeId = transactionType.getId();
+
+        // Get all the supplierAccountBalanceList where transactionType equals to transactionTypeId
+        defaultSupplierAccountBalanceShouldBeFound("transactionTypeId.equals=" + transactionTypeId);
+
+        // Get all the supplierAccountBalanceList where transactionType equals to transactionTypeId + 1
+        defaultSupplierAccountBalanceShouldNotBeFound("transactionTypeId.equals=" + (transactionTypeId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllSupplierAccountBalancesBySupplierIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        Supplier supplier = supplierAccountBalance.getSupplier();
+        supplierAccountBalanceRepository.saveAndFlush(supplierAccountBalance);
+        Long supplierId = supplier.getId();
+
+        // Get all the supplierAccountBalanceList where supplier equals to supplierId
+        defaultSupplierAccountBalanceShouldBeFound("supplierId.equals=" + supplierId);
+
+        // Get all the supplierAccountBalanceList where supplier equals to supplierId + 1
+        defaultSupplierAccountBalanceShouldNotBeFound("supplierId.equals=" + (supplierId + 1));
     }
 
     /**

@@ -88,6 +88,18 @@ public class SupplierAccountBalanceQueryService extends QueryService<SupplierAcc
             if (criteria.getBalance() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getBalance(), SupplierAccountBalance_.balance));
             }
+            if (criteria.getLocationId() != null) {
+                specification = specification.and(buildSpecification(criteria.getLocationId(),
+                    root -> root.join(SupplierAccountBalance_.location, JoinType.LEFT).get(Location_.id)));
+            }
+            if (criteria.getTransactionTypeId() != null) {
+                specification = specification.and(buildSpecification(criteria.getTransactionTypeId(),
+                    root -> root.join(SupplierAccountBalance_.transactionType, JoinType.LEFT).get(TransactionType_.id)));
+            }
+            if (criteria.getSupplierId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSupplierId(),
+                    root -> root.join(SupplierAccountBalance_.supplier, JoinType.LEFT).get(Supplier_.id)));
+            }
         }
         return specification;
     }

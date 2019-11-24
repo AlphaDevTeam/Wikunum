@@ -27,7 +27,7 @@ public class GoodsReceiptDetails implements Serializable {
 
     @NotNull
     @Column(name = "grn_qty", nullable = false)
-    private String grnQty;
+    private Double grnQty;
 
     @Column(name = "revised_item_cost", precision = 21, scale = 2)
     private BigDecimal revisedItemCost;
@@ -55,16 +55,16 @@ public class GoodsReceiptDetails implements Serializable {
         this.id = id;
     }
 
-    public String getGrnQty() {
+    public Double getGrnQty() {
         return grnQty;
     }
 
-    public GoodsReceiptDetails grnQty(String grnQty) {
+    public GoodsReceiptDetails grnQty(Double grnQty) {
         this.grnQty = grnQty;
         return this;
     }
 
-    public void setGrnQty(String grnQty) {
+    public void setGrnQty(Double grnQty) {
         this.grnQty = grnQty;
     }
 
@@ -141,7 +141,7 @@ public class GoodsReceiptDetails implements Serializable {
     public String toString() {
         return "GoodsReceiptDetails{" +
             "id=" + getId() +
-            ", grnQty='" + getGrnQty() + "'" +
+            ", grnQty=" + getGrnQty() +
             ", revisedItemCost=" + getRevisedItemCost() +
             "}";
     }

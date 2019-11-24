@@ -29,12 +29,38 @@
                     <label class="form-control-label" for="field_location">Location</label>
                     <select class="form-control" id="field_location" name="location" formControlName="location">
                         <option *ngIf="!editForm.get('location').value" [ngValue]="null" selected></option>
-                        <option [ngValue]="locationOption.id === editForm.get('location').value?.id ? editForm.get('location').value : locationOption" *ngFor="let locationOption of locations; trackBy: trackLocationById">{{locationOption.locationCode}}</option>
+                        <option [ngValue]="locationOption.id === editForm.get('location').value?.id ? editForm.get('location').value : locationOption" *ngFor="let locationOption of locations; trackBy: trackLocationById">{{locationOption.id}}</option>
                     </select>
                 </div>
                 <div *ngIf="editForm.get('location').invalid && (editForm.get('location').dirty || editForm.get('location').touched)">
                     <small class="form-text text-danger"
                            *ngIf="editForm.get('location').errors.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_customer">Customer</label>
+                    <select class="form-control" id="field_customer" name="customer" formControlName="customer">
+                        <option *ngIf="!editForm.get('customer').value" [ngValue]="null" selected></option>
+                        <option [ngValue]="customerOption.id === editForm.get('customer').value?.id ? editForm.get('customer').value : customerOption" *ngFor="let customerOption of customers; trackBy: trackCustomerById">{{customerOption.id}}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('customer').invalid && (editForm.get('customer').dirty || editForm.get('customer').touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('customer').errors.required">
+                        This field is required.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_transactionType">Transaction Type</label>
+                    <select class="form-control" id="field_transactionType" name="transactionType" formControlName="transactionType">
+                        <option *ngIf="!editForm.get('transactionType').value" [ngValue]="null" selected></option>
+                        <option [ngValue]="transactionTypeOption.id === editForm.get('transactionType').value?.id ? editForm.get('transactionType').value : transactionTypeOption" *ngFor="let transactionTypeOption of transactiontypes; trackBy: trackTransactionTypeById">{{transactionTypeOption.id}}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('transactionType').invalid && (editForm.get('transactionType').dirty || editForm.get('transactionType').touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('transactionType').errors.required">
                         This field is required.
                     </small>
                 </div>

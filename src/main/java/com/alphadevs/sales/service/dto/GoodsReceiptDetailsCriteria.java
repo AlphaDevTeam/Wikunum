@@ -27,7 +27,7 @@ public class GoodsReceiptDetailsCriteria implements Serializable, Criteria {
 
     private LongFilter id;
 
-    private StringFilter grnQty;
+    private DoubleFilter grnQty;
 
     private BigDecimalFilter revisedItemCost;
 
@@ -62,11 +62,11 @@ public class GoodsReceiptDetailsCriteria implements Serializable, Criteria {
         this.id = id;
     }
 
-    public StringFilter getGrnQty() {
+    public DoubleFilter getGrnQty() {
         return grnQty;
     }
 
-    public void setGrnQty(StringFilter grnQty) {
+    public void setGrnQty(DoubleFilter grnQty) {
         this.grnQty = grnQty;
     }
 

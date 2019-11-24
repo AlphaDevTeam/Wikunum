@@ -1,4 +1,5 @@
 package com.alphadevs.sales.domain;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -28,6 +29,21 @@ public class SupplierAccountBalance implements Serializable {
     @Column(name = "balance", precision = 21, scale = 2, nullable = false)
     private BigDecimal balance;
 
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("supplierAccountBalances")
+    private Location location;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("supplierAccountBalances")
+    private TransactionType transactionType;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("supplierAccountBalances")
+    private Supplier supplier;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -48,6 +64,45 @@ public class SupplierAccountBalance implements Serializable {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public SupplierAccountBalance location(Location location) {
+        this.location = location;
+        return this;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public SupplierAccountBalance transactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+        return this;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public SupplierAccountBalance supplier(Supplier supplier) {
+        this.supplier = supplier;
+        return this;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

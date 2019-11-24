@@ -9,6 +9,24 @@
                 <dd>
                     <span>{{supplierAccountBalance.balance}}</span>
                 </dd>
+                <dt><span>Location</span></dt>
+                <dd>
+                    <div *ngIf="supplierAccountBalance.location">
+                        <a [routerLink]="['/location', supplierAccountBalance.location?.id, 'view']">{{supplierAccountBalance.location?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span>Transaction Type</span></dt>
+                <dd>
+                    <div *ngIf="supplierAccountBalance.transactionType">
+                        <a [routerLink]="['/transaction-type', supplierAccountBalance.transactionType?.id, 'view']">{{supplierAccountBalance.transactionType?.id}}</a>
+                    </div>
+                </dd>
+                <dt><span>Supplier</span></dt>
+                <dd>
+                    <div *ngIf="supplierAccountBalance.supplier">
+                        <a [routerLink]="['/supplier', supplierAccountBalance.supplier?.id, 'view']">{{supplierAccountBalance.supplier?.id}}</a>
+                    </div>
+                </dd>
             </dl>
 
             <button type="submit"

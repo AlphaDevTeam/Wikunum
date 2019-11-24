@@ -34,6 +34,16 @@ public class CustomerAccountBalance implements Serializable {
     @JsonIgnoreProperties("customerAccountBalances")
     private Location location;
 
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("customerAccountBalances")
+    private Customer customer;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("customerAccountBalances")
+    private TransactionType transactionType;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -67,6 +77,32 @@ public class CustomerAccountBalance implements Serializable {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public CustomerAccountBalance customer(Customer customer) {
+        this.customer = customer;
+        return this;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public CustomerAccountBalance transactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+        return this;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

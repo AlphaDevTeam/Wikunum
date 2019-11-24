@@ -21,6 +21,8 @@
             <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="balance"><span>Balance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="location.id"><span>Location</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="customer.id"><span>Customer</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="transactionType.id"><span>Transaction Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -30,7 +32,17 @@
                 <td>{{customerAccountBalance.balance}}</td>
                 <td>
                     <div *ngIf="customerAccountBalance.location">
-                        <a [routerLink]="['/location', customerAccountBalance.location?.id, 'view' ]" >{{customerAccountBalance.location?.locationCode}}</a>
+                        <a [routerLink]="['/location', customerAccountBalance.location?.id, 'view' ]" >{{customerAccountBalance.location?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="customerAccountBalance.customer">
+                        <a [routerLink]="['/customer', customerAccountBalance.customer?.id, 'view' ]" >{{customerAccountBalance.customer?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="customerAccountBalance.transactionType">
+                        <a [routerLink]="['/transaction-type', customerAccountBalance.transactionType?.id, 'view' ]" >{{customerAccountBalance.transactionType?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">
