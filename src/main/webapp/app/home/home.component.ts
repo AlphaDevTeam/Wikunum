@@ -72,6 +72,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
 
+  trackId(index: number, item: IMenuItems) {
+    return item.id;
+  }
+
   sort() {
     const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {

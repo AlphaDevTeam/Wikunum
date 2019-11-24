@@ -220,4 +220,16 @@ export class GoodsReceiptUpdateComponent implements OnInit {
   trackGoodsReceiptById(index: number, item: IGoodsReceipt) {
     return item.id;
   }
+
+  trackItemsById(index: number, item: IItems) {
+    return item.id;
+  }
+
+  trackId(index: number, item: IGoodsReceiptDetails) {
+    return item.id;
+  }
+
+  trackStorageBinById(index: number, item: IStorageBin) {
+    return item.id;
+  }
 }
