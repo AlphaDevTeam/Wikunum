@@ -12,6 +12,21 @@
                       You are logged in as {{account.login}}[{{account.company.companyCode}}]
                 </span>
             </div>
+            <div *ngSwitchCase="true">
+                <div class="card-group" *ngIf="menuItems?.length > 0">
+                    <div *ngFor="let menuItems of menuItems ;trackBy: trackId">
+                        <div class="card text-center" style="width: 12rem;">
+                            <img src="https://placeimg.com/640/480/any" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">{{menuItems.menuName}}</h5>
+                                <p class="card-text">{{menuItems.menuURL}}</p>
+                                <a class="btn btn-primary" routerLink="{{menuItems.menuURL}}" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Click Here</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="alert alert-warning" *ngSwitchCase="false">
                 <span>If you want to </span>

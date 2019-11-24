@@ -45,7 +45,7 @@
                     <label class="form-control-label" for="field_supplier">Supplier</label>
                     <select class="form-control" id="field_supplier" name="supplier" formControlName="supplier">
                         <option *ngIf="!editForm.get('supplier').value" [ngValue]="null" selected></option>
-                        <option [ngValue]="supplierOption.id === editForm.get('supplier').value?.id ? editForm.get('supplier').value : supplierOption" *ngFor="let supplierOption of suppliers; trackBy: trackSupplierById">{{supplierOption.id}}</option>
+                        <option [ngValue]="supplierOption.id === editForm.get('supplier').value?.id ? editForm.get('supplier').value : supplierOption" *ngFor="let supplierOption of suppliers; trackBy: trackSupplierById">{{supplierOption.supplierCode}}</option>
                     </select>
                 </div>
                 <div *ngIf="editForm.get('supplier').invalid && (editForm.get('supplier').dirty || editForm.get('supplier').touched)">
@@ -58,7 +58,7 @@
                     <label class="form-control-label" for="field_location">Location</label>
                     <select class="form-control" id="field_location" name="location" formControlName="location">
                         <option *ngIf="!editForm.get('location').value" [ngValue]="null" selected></option>
-                        <option [ngValue]="locationOption.id === editForm.get('location').value?.id ? editForm.get('location').value : locationOption" *ngFor="let locationOption of locations; trackBy: trackLocationById">{{locationOption.id}}</option>
+                        <option [ngValue]="locationOption.id === editForm.get('location').value?.id ? editForm.get('location').value : locationOption" *ngFor="let locationOption of locations; trackBy: trackLocationById">{{locationOption.locationCode}}</option>
                     </select>
                 </div>
                 <div *ngIf="editForm.get('location').invalid && (editForm.get('location').dirty || editForm.get('location').touched)">
@@ -67,8 +67,6 @@
                         This field is required.
                     </small>
                 </div>
-
-
 
                 <div class="col-4">
                     <label class="form-control-label" for="field_storageBin">Storage Bin</label>
@@ -107,12 +105,7 @@
                     <input ngDefaultControl type="text" class="form-control" name="revisedItemCost" id="field_grnRevisedItemCost" formControlName="revisedItemCost">
                 </div>
 
-                <div class="col-4">
-                    <label class="form-control-label" for="field_debug">Revised Item Cost</label>
-                    <input ngDefaultControl type="text" class="form-control" name="debug" id="field_debug" formControlName="debug">
-                </div>
-
-                <div  *jhiHasAnyAuthority="'ROLE_ADMIN'" >
+                <div class="col-4" *jhiHasAnyAuthority="'ROLE_ADMIN'" >
                     <span ngDefaultControl >{{debug}}</span>
                 </div>
 

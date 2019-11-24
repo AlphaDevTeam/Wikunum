@@ -44,11 +44,10 @@ public class GoodsReceiptService {
     private final PurchaseAccountService purchaseAccountService;
     private final SupplierAccountService supplierAccountService;
     private final SupplierAccountBalanceQueryService supplierAccountBalanceQueryService;
-    private final CashBookService cashBookService;
-    private final CashBookBalanceQueryService cashBookBalanceQueryService;
     private final TransactionTypeQueryService transactionTypeQueryService;
+    private final SupplierAccountBalanceService supplierAccountBalanceService;
 
-    public GoodsReceiptService(GoodsReceiptRepository goodsReceiptRepository, GoodsReceiptDetailsRepository goodsReceiptDetailsRepository, UserService userService, StockService stockService, StockQueryService stockQueryService, PurchaseAccountBalanceQueryService purchaseAccountBalanceQueryService, ItemBinCardService itemBinCardService, ItemsService itemsService, PurchaseAccountService purchaseAccountService, SupplierAccountService supplierAccountService, SupplierAccountBalanceQueryService supplierAccountBalanceQueryService, CashBookService cashBookService, CashBookBalanceQueryService cashBookBalanceQueryService, TransactionTypeQueryService transactionTypeQueryService) {
+    public GoodsReceiptService(GoodsReceiptRepository goodsReceiptRepository, GoodsReceiptDetailsRepository goodsReceiptDetailsRepository, UserService userService, StockService stockService, StockQueryService stockQueryService, PurchaseAccountBalanceQueryService purchaseAccountBalanceQueryService, ItemBinCardService itemBinCardService, ItemsService itemsService, PurchaseAccountService purchaseAccountService, SupplierAccountService supplierAccountService, SupplierAccountBalanceQueryService supplierAccountBalanceQueryService, TransactionTypeQueryService transactionTypeQueryService, SupplierAccountBalanceService supplierAccountBalanceService) {
         this.goodsReceiptRepository = goodsReceiptRepository;
         this.goodsReceiptDetailsRepository = goodsReceiptDetailsRepository;
         this.userService = userService;
@@ -60,8 +59,7 @@ public class GoodsReceiptService {
         this.purchaseAccountService = purchaseAccountService;
         this.supplierAccountService = supplierAccountService;
         this.supplierAccountBalanceQueryService = supplierAccountBalanceQueryService;
-        this.cashBookService = cashBookService;
-        this.cashBookBalanceQueryService = cashBookBalanceQueryService;
+        this.supplierAccountBalanceService = supplierAccountBalanceService;
         this.transactionTypeQueryService = transactionTypeQueryService;
     }
 
@@ -115,7 +113,7 @@ public class GoodsReceiptService {
 
 
                     //Set Amounts
-                    totalAmount = totalAmount.add(savedGoodsReceiptDetails.getRevisedItemCost());
+                    totalAmount = totalAmount.add(savedGoodsReceiptDetails.getRevisedItemCost().multiply(new BigDecimal(savedGoodsReceiptDetails.getGrnQty())));
 
                     //Setting Filter
                     longFilterCompanyId.setEquals(exUser.getCompany().getId());
@@ -134,13 +132,10 @@ public class GoodsReceiptService {
                     assert (StockItem.isEmpty());
                     assert (StockItem.size()>1);
 
+
                     //Update Stock
-                    Stock stock = new Stock();
-                    stock.company(exUser.getCompany());
-                    stock.setItem(savedGoodsReceiptDetails.getItem());
-                    stock.setLocation(savedGoodsReceipt.getLocation());
-                    stock.setStockQty(StockItem.get(0).getStockQty() + savedGoodsReceiptDetails.getGrnQty());
-                    stockService.save(stock);
+                    StockItem.get(0).setStockQty(StockItem.get(0).getStockQty() + savedGoodsReceiptDetails.getGrnQty());
+                    stockService.save(StockItem.get(0));
 
                     //Update ItemBin Card
                     ItemBinCard itemBinCard = new ItemBinCard();
@@ -150,7 +145,7 @@ public class GoodsReceiptService {
                     itemBinCard.setTransactionDate(SecurityUtils.isCurrentUserInRole(ADMIN) ? savedGoodsReceipt.getGrnDate() : java.time.LocalDate.now());
                     itemBinCard.setTransactionQty(savedGoodsReceiptDetails.getGrnQty());
                     itemBinCard.setTransactionDescription("Goods Receipt : " + savedGoodsReceipt.getGrnNumber() );
-                    itemBinCard.setTransactionBalance(new BigDecimal(stock.getStockQty()));
+                    itemBinCard.setTransactionBalance(new BigDecimal(StockItem.get(0).getStockQty()));
                     itemBinCardService.save(itemBinCard);
 
                 }
@@ -187,7 +182,9 @@ public class GoodsReceiptService {
             assert (supplierAccountBalance.isEmpty());
             assert (supplierAccountBalance.size()>1);
 
+            //Update Supplier Account
             SupplierAccount supplierAccount = new SupplierAccount();
+            supplierAccount.setSupplier(savedGoodsReceipt.getSupplier());
             supplierAccount.setLocation(savedGoodsReceipt.getLocation());
             supplierAccount.setTransactionDate(SecurityUtils.isCurrentUserInRole(ADMIN) ? savedGoodsReceipt.getGrnDate() : java.time.LocalDate.now());
             supplierAccount.setTransactionAmountCR(totalAmount);
@@ -197,6 +194,9 @@ public class GoodsReceiptService {
             supplierAccount.setTransactionType(transactionType.get(0));
             supplierAccountService.save(supplierAccount);
 
+            //Update Supplier Account Balance
+            supplierAccountBalance.get(0).setBalance(supplierAccountBalance.get(0).getBalance().add(totalAmount));
+            supplierAccountBalanceService.save(supplierAccountBalance.get(0));
         }
 
 

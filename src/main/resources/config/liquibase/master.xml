@@ -24,7 +24,7 @@
     <include file="config/liquibase/changelog/20191124122540_added_entity_PurchaseOrder.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122541_added_entity_PurchaseOrderDetails.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122542_added_entity_GoodsReceipt.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20191124122543_added_entity_GoodsReceiptDetails.xml" relativeToChangelogFile="false"/>
+    
     <include file="config/liquibase/changelog/20191124122544_added_entity_StorageBin.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122545_added_entity_UnitOfMeasurements.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122546_added_entity_Currency.xml" relativeToChangelogFile="false"/>
@@ -63,7 +63,7 @@
     <include file="config/liquibase/changelog/20191124122540_added_entity_constraints_PurchaseOrder.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122541_added_entity_constraints_PurchaseOrderDetails.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122542_added_entity_constraints_GoodsReceipt.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20191124122543_added_entity_constraints_GoodsReceiptDetails.xml" relativeToChangelogFile="false"/>
+    
     <include file="config/liquibase/changelog/20191124122547_added_entity_constraints_DocumentNumberConfig.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122548_added_entity_constraints_UserPermissions.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122549_added_entity_constraints_UserGroups.xml" relativeToChangelogFile="false"/>
