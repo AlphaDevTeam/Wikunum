@@ -17,9 +17,19 @@
             "relationshipValidateRules": "required",
             "relationshipName": "location",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "transactionType",
+            "otherEntityName": "transactionType",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "purchaseAccountBalance"
         }
     ],
-    "changelogDate": "20191124122558",
+    "changelogDate": "20191124122559",
     "javadoc": "PurchaseAccount Balance Entity.\\n@author Mihindu Karunarathne.",
     "entityTableName": "purchase_account_balance",
     "dto": "no",
@@ -29,5 +39,7 @@
     "fluentMethods": true,
     "readOnly": false,
     "clientRootFolder": "",
-    "applications": "*"
+    "applications": "*",
+    "searchEngine": false,
+    "databaseType": "sql"
 }

@@ -46,8 +46,9 @@ public class GoodsReceiptService {
     private final SupplierAccountBalanceQueryService supplierAccountBalanceQueryService;
     private final TransactionTypeQueryService transactionTypeQueryService;
     private final SupplierAccountBalanceService supplierAccountBalanceService;
+    private final PurchaseAccountBalanceService purchaseAccountBalanceService;
 
-    public GoodsReceiptService(GoodsReceiptRepository goodsReceiptRepository, GoodsReceiptDetailsRepository goodsReceiptDetailsRepository, UserService userService, StockService stockService, StockQueryService stockQueryService, PurchaseAccountBalanceQueryService purchaseAccountBalanceQueryService, ItemBinCardService itemBinCardService, ItemsService itemsService, PurchaseAccountService purchaseAccountService, SupplierAccountService supplierAccountService, SupplierAccountBalanceQueryService supplierAccountBalanceQueryService, TransactionTypeQueryService transactionTypeQueryService, SupplierAccountBalanceService supplierAccountBalanceService) {
+    public GoodsReceiptService(GoodsReceiptRepository goodsReceiptRepository, GoodsReceiptDetailsRepository goodsReceiptDetailsRepository, UserService userService, StockService stockService, StockQueryService stockQueryService, PurchaseAccountBalanceQueryService purchaseAccountBalanceQueryService, ItemBinCardService itemBinCardService, ItemsService itemsService, PurchaseAccountService purchaseAccountService, SupplierAccountService supplierAccountService, SupplierAccountBalanceQueryService supplierAccountBalanceQueryService, TransactionTypeQueryService transactionTypeQueryService, SupplierAccountBalanceService supplierAccountBalanceService, PurchaseAccountBalanceService purchaseAccountBalanceService) {
         this.goodsReceiptRepository = goodsReceiptRepository;
         this.goodsReceiptDetailsRepository = goodsReceiptDetailsRepository;
         this.userService = userService;
@@ -61,6 +62,7 @@ public class GoodsReceiptService {
         this.supplierAccountBalanceQueryService = supplierAccountBalanceQueryService;
         this.supplierAccountBalanceService = supplierAccountBalanceService;
         this.transactionTypeQueryService = transactionTypeQueryService;
+        this.purchaseAccountBalanceService = purchaseAccountBalanceService;
     }
 
     /**
@@ -104,7 +106,7 @@ public class GoodsReceiptService {
         //Check if the user had Location access - for extra security
         if(exUser != null && exUser.getLocations().contains(goodsReceipt.getLocation())){
             savedGoodsReceipt = goodsReceiptRepository.save(goodsReceipt);
-            BigDecimal totalAmount = new BigDecimal(0);
+            BigDecimal totalAmount = BigDecimal.ZERO;
             for (GoodsReceiptDetails details : goodsReceipt.getDetails()) {
                 if(details != null){
                     GoodsReceiptDetails savedGoodsReceiptDetails = null;
@@ -113,7 +115,9 @@ public class GoodsReceiptService {
 
 
                     //Set Amounts
-                    totalAmount = totalAmount.add(savedGoodsReceiptDetails.getRevisedItemCost().multiply(new BigDecimal(savedGoodsReceiptDetails.getGrnQty())));
+                    //BigDecimal itemCost = (BigDecimal.ZERO.compareTo(savedGoodsReceiptDetails.getRevisedItemCost()) == 0) ? savedGoodsReceiptDetails.getRevisedItemCost() : savedGoodsReceiptDetails.getItem().getItemCost() ;
+                    BigDecimal itemCost = (savedGoodsReceiptDetails.getRevisedItemCost() != null) ? savedGoodsReceiptDetails.getRevisedItemCost() : savedGoodsReceiptDetails.getItem().getItemCost() ;
+                    totalAmount = totalAmount.add(itemCost.multiply(new BigDecimal(savedGoodsReceiptDetails.getGrnQty())));
 
                     //Setting Filter
                     longFilterCompanyId.setEquals(exUser.getCompany().getId());
@@ -126,16 +130,18 @@ public class GoodsReceiptService {
                     stockCriteria.setCompanyId(longFilterCompanyId);
                     stockCriteria.setLocationId(longFilterLocationId);
                     stockCriteria.setItemId(longFilterItemId);
-                    List<Stock> StockItem = stockQueryService.findByCriteria(stockCriteria);
+                    List<Stock> StockItemList = stockQueryService.findByCriteria(stockCriteria);
 
                     //Check if StockItem is Empty or have multiple entries
-                    assert (StockItem.isEmpty());
-                    assert (StockItem.size()>1);
+                    assert (StockItemList.isEmpty());
+                    assert (StockItemList.size()>1);
 
+                    //Get Stock
+                    Stock stock = StockItemList.get(0);
 
                     //Update Stock
-                    StockItem.get(0).setStockQty(StockItem.get(0).getStockQty() + savedGoodsReceiptDetails.getGrnQty());
-                    stockService.save(StockItem.get(0));
+                    stock.addStockQty(savedGoodsReceiptDetails.getGrnQty());
+                    stockService.save(stock);
 
                     //Update ItemBin Card
                     ItemBinCard itemBinCard = new ItemBinCard();
@@ -144,8 +150,8 @@ public class GoodsReceiptService {
                     //If user level is Admin, allow user to override the date if not set current date/time
                     itemBinCard.setTransactionDate(SecurityUtils.isCurrentUserInRole(ADMIN) ? savedGoodsReceipt.getGrnDate() : java.time.LocalDate.now());
                     itemBinCard.setTransactionQty(savedGoodsReceiptDetails.getGrnQty());
-                    itemBinCard.setTransactionDescription("Goods Receipt : " + savedGoodsReceipt.getGrnNumber() );
-                    itemBinCard.setTransactionBalance(new BigDecimal(StockItem.get(0).getStockQty()));
+                    itemBinCard.setTransactionDescription("Goods Receipt : " + savedGoodsReceipt.getGrnNumber() + " @ " + itemCost + " by " + exUser.getUserKey());
+                    itemBinCard.setTransactionBalance(new BigDecimal(stock.getStockQty()));
                     itemBinCardService.save(itemBinCard);
 
                 }
@@ -154,20 +160,27 @@ public class GoodsReceiptService {
             //getCurrent Purchase Balance
             PurchaseAccountBalanceCriteria purchaseAccountBalanceCriteria = new PurchaseAccountBalanceCriteria();
             purchaseAccountBalanceCriteria.setLocationId(longFilterLocationId);
-            List<PurchaseAccountBalance> purchaseAccountBalanceByCriteria = purchaseAccountBalanceQueryService.findByCriteria(purchaseAccountBalanceCriteria);
+            List<PurchaseAccountBalance> purchaseAccountBalanceList= purchaseAccountBalanceQueryService.findByCriteria(purchaseAccountBalanceCriteria);
 
             //Check if PurchaseAccountBalance is Empty or have multiple entries
-            assert (purchaseAccountBalanceByCriteria.isEmpty());
-            assert (purchaseAccountBalanceByCriteria.size()>1);
+            assert (purchaseAccountBalanceList.isEmpty());
+            assert (purchaseAccountBalanceList.size()>1);
+
+            //get Purchase Account Balance
+            PurchaseAccountBalance purchaseAccountBalance = purchaseAccountBalanceList.get(0);
+
+            //Update Purchase Account Balance
+            purchaseAccountBalance.addBalance(totalAmount);
+            purchaseAccountBalanceService.save(purchaseAccountBalance);
 
             //Update Purchase Account
             PurchaseAccount purchaseAccount = new PurchaseAccount();
             purchaseAccount.setLocation(savedGoodsReceipt.getLocation());
             purchaseAccount.setTransactionDate(SecurityUtils.isCurrentUserInRole(ADMIN) ? savedGoodsReceipt.getGrnDate() : java.time.LocalDate.now());
-            purchaseAccount.setTransactionAmountCR(new BigDecimal(0));
+            purchaseAccount.setTransactionAmountCR(BigDecimal.ZERO);
             purchaseAccount.setTransactionAmountDR(totalAmount);
             purchaseAccount.setTransactionDescription("Purchase : " + savedGoodsReceipt.getGrnNumber());
-            purchaseAccount.setTransactionBalance(purchaseAccountBalanceByCriteria.get(0).getBalance().add(totalAmount));
+            purchaseAccount.setTransactionBalance(purchaseAccountBalance.getBalance());
             purchaseAccount.setTransactionType(transactionType.get(0));
             purchaseAccountService.save(purchaseAccount);
 
@@ -176,11 +189,18 @@ public class GoodsReceiptService {
             supplierAccountBalanceCriteria.setLocationId(longFilterLocationId);
             supplierAccountBalanceCriteria.setTransactionTypeId(longFilterTransactionId);
             supplierAccountBalanceCriteria.setSupplierId(longFilterSupplierId);
-            List<SupplierAccountBalance> supplierAccountBalance = supplierAccountBalanceQueryService.findByCriteria(supplierAccountBalanceCriteria);
+            List<SupplierAccountBalance> supplierAccountBalanceList = supplierAccountBalanceQueryService.findByCriteria(supplierAccountBalanceCriteria);
 
             //Check if SupplierAccountBalance is Empty or have multiple entries
-            assert (supplierAccountBalance.isEmpty());
-            assert (supplierAccountBalance.size()>1);
+            assert (supplierAccountBalanceList.isEmpty());
+            assert (supplierAccountBalanceList.size()>1);
+
+            //get Supplier Account Balance
+            SupplierAccountBalance supplierAccountBalance = supplierAccountBalanceList.get(0);
+
+            //Update Supplier Account balance
+            supplierAccountBalance.addBalance(totalAmount);
+            supplierAccountBalanceService.save(supplierAccountBalance);
 
             //Update Supplier Account
             SupplierAccount supplierAccount = new SupplierAccount();
@@ -188,15 +208,12 @@ public class GoodsReceiptService {
             supplierAccount.setLocation(savedGoodsReceipt.getLocation());
             supplierAccount.setTransactionDate(SecurityUtils.isCurrentUserInRole(ADMIN) ? savedGoodsReceipt.getGrnDate() : java.time.LocalDate.now());
             supplierAccount.setTransactionAmountCR(totalAmount);
-            supplierAccount.setTransactionAmountDR(new BigDecimal(0));
+            supplierAccount.setTransactionAmountDR(BigDecimal.ZERO);
             supplierAccount.setTransactionDescription("Purchase : " + savedGoodsReceipt.getGrnNumber());
-            supplierAccount.setTransactionBalance(supplierAccountBalance.get(0).getBalance().add(totalAmount));
+            supplierAccount.setTransactionBalance(supplierAccountBalance.getBalance());
             supplierAccount.setTransactionType(transactionType.get(0));
             supplierAccountService.save(supplierAccount);
 
-            //Update Supplier Account Balance
-            supplierAccountBalance.get(0).setBalance(supplierAccountBalance.get(0).getBalance().add(totalAmount));
-            supplierAccountBalanceService.save(supplierAccountBalance.get(0));
         }
 
 

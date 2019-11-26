@@ -34,6 +34,11 @@ public class PurchaseAccountBalance implements Serializable {
     @JsonIgnoreProperties("purchaseAccountBalances")
     private Location location;
 
+    @ManyToOne(optional = false)
+    @NotNull
+    @JsonIgnoreProperties("purchaseAccountBalances")
+    private TransactionType transactionType;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -56,6 +61,10 @@ public class PurchaseAccountBalance implements Serializable {
         this.balance = balance;
     }
 
+    public void addBalance(BigDecimal balance) {
+        this.balance = this.balance.add(balance);
+    }
+
     public Location getLocation() {
         return location;
     }
@@ -67,6 +76,19 @@ public class PurchaseAccountBalance implements Serializable {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public PurchaseAccountBalance transactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+        return this;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

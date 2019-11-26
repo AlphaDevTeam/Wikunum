@@ -38,6 +38,19 @@
                         This field is required.
                     </small>
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_transactionType">Transaction Type</label>
+                    <select class="form-control" id="field_transactionType" name="transactionType" formControlName="transactionType">
+                        <option *ngIf="!editForm.get('transactionType').value" [ngValue]="null" selected></option>
+                        <option [ngValue]="transactionTypeOption.id === editForm.get('transactionType').value?.id ? editForm.get('transactionType').value : transactionTypeOption" *ngFor="let transactionTypeOption of transactiontypes; trackBy: trackTransactionTypeById">{{transactionTypeOption.id}}</option>
+                    </select>
+                </div>
+                <div *ngIf="editForm.get('transactionType').invalid && (editForm.get('transactionType').dirty || editForm.get('transactionType').touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('transactionType').errors.required">
+                        This field is required.
+                    </small>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

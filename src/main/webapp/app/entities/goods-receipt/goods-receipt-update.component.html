@@ -89,7 +89,7 @@
 
                 <div class="col-4">
                     <label class="form-control-label" for="field_item">Item</label>
-                    <select class="form-control" id="field_item" name="item" formControlName="item" (change)="updateItem(editForm.get('item').value)">
+                    <select #item class="form-control" id="field_item" name="item" formControlName="item" (change)="updateItem(editForm.get('item').value)">
                         <option [ngValue]="null"></option>
                         <option [ngValue]="itemsOption.id === editForm.get('item').value?.id ? editForm.get('item').value : itemsOption" *ngFor="let itemsOption of items; trackBy: trackItemsById">{{itemsOption.itemCode}}</option>
                     </select>
@@ -117,7 +117,7 @@
                     <button type="button" id="add" class="btn btn-secondary" [disabled]="editForm.invalid || isSaving" class="btn btn-primary" (click)="addItem()">
                         <fa-icon [icon]="'plus-circle'"></fa-icon>&nbsp;<span>Add</span>
                     </button>
-                    <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <button type="submit" id="save-entity" [disabled]="virtualGoodsReceipts?.length < 1 || isSaving" class="btn btn-primary">
                         <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
                     </button>
                 </div>

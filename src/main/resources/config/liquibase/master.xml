@@ -39,7 +39,6 @@
     <include file="config/liquibase/changelog/20191124122555_added_entity_SupplierAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122556_added_entity_SupplierAccountBalance.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122557_added_entity_PurchaseAccount.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20191124122558_added_entity_PurchaseAccountBalance.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122559_added_entity_SalesAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122600_added_entity_SalesAccountBalance.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122601_added_entity_DocumentType.xml" relativeToChangelogFile="false"/>
@@ -52,6 +51,7 @@
     <include file="config/liquibase/changelog/20191124122608_added_entity_Stock.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122609_added_entity_Company.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122544_added_entity_GoodsReceiptDetails.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191124122559_added_entity_PurchaseAccountBalance.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20191124122533_added_entity_constraints_Products.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122534_added_entity_constraints_Designs.xml" relativeToChangelogFile="false"/>
@@ -84,5 +84,6 @@
     <include file="config/liquibase/changelog/20191124122608_added_entity_constraints_Stock.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122544_added_entity_constraints_GoodsReceiptDetails.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191124122556_added_entity_constraints_SupplierAccountBalance.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191124122559_added_entity_constraints_PurchaseAccountBalance.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -64,6 +64,10 @@ public class SupplierResource {
             throw new BadRequestAlertException("A new supplier cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Supplier result = supplierService.save(supplier);
+        if(result.getId() == null){
+            HttpHeaders supplier_could_not_be_saved = HeaderUtil.createFailureAlert(applicationName, false, ENTITY_NAME, "Supplier could not be saved", "Supplier could not be saved");
+            return  ResponseEntity.badRequest().headers(supplier_could_not_be_saved).body(new Supplier());
+        }
         return ResponseEntity.created(new URI("/api/suppliers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);

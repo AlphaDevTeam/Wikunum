@@ -1,7 +1,12 @@
 package com.alphadevs.sales.service;
 
+import com.alphadevs.sales.domain.ExUser;
 import com.alphadevs.sales.domain.Location;
+import com.alphadevs.sales.domain.PurchaseAccountBalance;
+import com.alphadevs.sales.domain.TransactionType;
 import com.alphadevs.sales.repository.LocationRepository;
+import com.alphadevs.sales.service.dto.TransactionTypeCriteria;
+import io.github.jhipster.service.filter.BooleanFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,9 +29,15 @@ public class LocationService {
     private final Logger log = LoggerFactory.getLogger(LocationService.class);
 
     private final LocationRepository locationRepository;
+    private final TransactionTypeQueryService transactionTypeQueryService;
+    private final PurchaseAccountBalanceService purchaseAccountBalanceService;
+    private final UserService userService;
 
-    public LocationService(LocationRepository locationRepository) {
+    public LocationService(LocationRepository locationRepository, TransactionTypeQueryService transactionTypeQueryService, PurchaseAccountBalanceService purchaseAccountBalanceService, UserService userService) {
         this.locationRepository = locationRepository;
+        this.transactionTypeQueryService = transactionTypeQueryService;
+        this.purchaseAccountBalanceService = purchaseAccountBalanceService;
+        this.userService = userService;
     }
 
     /**
@@ -35,7 +48,40 @@ public class LocationService {
      */
     public Location save(Location location) {
         log.debug("Request to save Location : {}", location);
-        return locationRepository.save(location);
+
+        //Save Location
+        Location savedLocation = locationRepository.save(location);
+
+        //get ExUser
+        ExUser exUser = null;
+
+        //Filter setting
+        BooleanFilter booleanFilterTrue = new BooleanFilter();
+        booleanFilterTrue.setEquals(true);
+
+        //get Available Transaction Types
+        TransactionTypeCriteria transactionTypeCriteria = new TransactionTypeCriteria();
+        transactionTypeCriteria.setIsActive(booleanFilterTrue);
+        List<TransactionType> transactionTypeList = transactionTypeQueryService.findByCriteria(transactionTypeCriteria);
+
+        //Check if TransactionType is Empty or have multiple entries
+        assert (transactionTypeList.isEmpty());
+        assert (transactionTypeList.size()>1);
+
+
+        if(userService.getExUser().isPresent()){
+            exUser = userService.getExUser().get();
+            assert (exUser != null);
+        }
+
+        for (TransactionType transactionType: transactionTypeList) {
+            PurchaseAccountBalance purchaseAccountBalance = new PurchaseAccountBalance();
+            purchaseAccountBalance.setTransactionType(transactionType);
+            purchaseAccountBalance.setLocation(savedLocation);
+            purchaseAccountBalance.setBalance(BigDecimal.ZERO);
+            purchaseAccountBalanceService.save(purchaseAccountBalance);
+        }
+        return savedLocation ;
     }
 
     /**

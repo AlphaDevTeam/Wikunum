@@ -65,6 +65,10 @@ public class Stock implements Serializable {
         this.stockQty = stockQty;
     }
 
+    public void addStockQty(Double stockQty) {
+        this.stockQty = this.stockQty + stockQty;
+    }
+
     public Items getItem() {
         return item;
     }

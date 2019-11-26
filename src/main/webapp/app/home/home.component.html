@@ -12,7 +12,7 @@
                       You are logged in as {{account.login}}[{{account.company.companyCode}}]
                 </span>
             </div>
-            <div *ngSwitchCase="true">
+            <div ngDefaultControl *ngSwitchCase="true">
                 <div class="card-group" *ngIf="menuItems?.length > 0">
                     <div *ngFor="let menuItems of menuItems ;trackBy: trackId">
                         <div class="card text-center" style="width: 12rem;">

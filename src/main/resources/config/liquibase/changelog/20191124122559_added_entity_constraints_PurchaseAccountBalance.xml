@@ -6,7 +6,7 @@
     <!--
         Added the constraints for entity PurchaseAccountBalance.
     -->
-    <changeSet id="20191124122558-2" author="jhipster">
+    <changeSet id="20191124122559-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="location_id"
                                  baseTableName="purchase_account_balance"

@@ -3,6 +3,7 @@ package com.alphadevs.sales.web.rest;
 import com.alphadevs.sales.WikunumApp;
 import com.alphadevs.sales.domain.PurchaseAccountBalance;
 import com.alphadevs.sales.domain.Location;
+import com.alphadevs.sales.domain.TransactionType;
 import com.alphadevs.sales.repository.PurchaseAccountBalanceRepository;
 import com.alphadevs.sales.service.PurchaseAccountBalanceService;
 import com.alphadevs.sales.web.rest.errors.ExceptionTranslator;
@@ -101,6 +102,16 @@ public class PurchaseAccountBalanceResourceIT {
             location = TestUtil.findAll(em, Location.class).get(0);
         }
         purchaseAccountBalance.setLocation(location);
+        // Add required entity
+        TransactionType transactionType;
+        if (TestUtil.findAll(em, TransactionType.class).isEmpty()) {
+            transactionType = TransactionTypeResourceIT.createEntity(em);
+            em.persist(transactionType);
+            em.flush();
+        } else {
+            transactionType = TestUtil.findAll(em, TransactionType.class).get(0);
+        }
+        purchaseAccountBalance.setTransactionType(transactionType);
         return purchaseAccountBalance;
     }
     /**
@@ -122,6 +133,16 @@ public class PurchaseAccountBalanceResourceIT {
             location = TestUtil.findAll(em, Location.class).get(0);
         }
         purchaseAccountBalance.setLocation(location);
+        // Add required entity
+        TransactionType transactionType;
+        if (TestUtil.findAll(em, TransactionType.class).isEmpty()) {
+            transactionType = TransactionTypeResourceIT.createUpdatedEntity(em);
+            em.persist(transactionType);
+            em.flush();
+        } else {
+            transactionType = TestUtil.findAll(em, TransactionType.class).get(0);
+        }
+        purchaseAccountBalance.setTransactionType(transactionType);
         return purchaseAccountBalance;
     }
 
@@ -352,6 +373,22 @@ public class PurchaseAccountBalanceResourceIT {
 
         // Get all the purchaseAccountBalanceList where location equals to locationId + 1
         defaultPurchaseAccountBalanceShouldNotBeFound("locationId.equals=" + (locationId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllPurchaseAccountBalancesByTransactionTypeIsEqualToSomething() throws Exception {
+        // Get already existing entity
+        TransactionType transactionType = purchaseAccountBalance.getTransactionType();
+        purchaseAccountBalanceRepository.saveAndFlush(purchaseAccountBalance);
+        Long transactionTypeId = transactionType.getId();
+
+        // Get all the purchaseAccountBalanceList where transactionType equals to transactionTypeId
+        defaultPurchaseAccountBalanceShouldBeFound("transactionTypeId.equals=" + transactionTypeId);
+
+        // Get all the purchaseAccountBalanceList where transactionType equals to transactionTypeId + 1
+        defaultPurchaseAccountBalanceShouldNotBeFound("transactionTypeId.equals=" + (transactionTypeId + 1));
     }
 
     /**

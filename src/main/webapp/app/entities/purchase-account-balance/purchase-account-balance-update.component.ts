@@ -10,6 +10,8 @@ import { IPurchaseAccountBalance, PurchaseAccountBalance } from 'app/shared/mode
 import { PurchaseAccountBalanceService } from './purchase-account-balance.service';
 import { ILocation } from 'app/shared/model/location.model';
 import { LocationService } from 'app/entities/location/location.service';
+import { ITransactionType } from 'app/shared/model/transaction-type.model';
+import { TransactionTypeService } from 'app/entities/transaction-type/transaction-type.service';
 
 @Component({
   selector: 'jhi-purchase-account-balance-update',
@@ -20,16 +22,20 @@ export class PurchaseAccountBalanceUpdateComponent implements OnInit {
 
   locations: ILocation[];
 
+  transactiontypes: ITransactionType[];
+
   editForm = this.fb.group({
     id: [],
     balance: [null, [Validators.required]],
-    location: [null, Validators.required]
+    location: [null, Validators.required],
+    transactionType: [null, Validators.required]
   });
 
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected purchaseAccountBalanceService: PurchaseAccountBalanceService,
     protected locationService: LocationService,
+    protected transactionTypeService: TransactionTypeService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -42,13 +48,20 @@ export class PurchaseAccountBalanceUpdateComponent implements OnInit {
     this.locationService
       .query()
       .subscribe((res: HttpResponse<ILocation[]>) => (this.locations = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.transactionTypeService
+      .query()
+      .subscribe(
+        (res: HttpResponse<ITransactionType[]>) => (this.transactiontypes = res.body),
+        (res: HttpErrorResponse) => this.onError(res.message)
+      );
   }
 
   updateForm(purchaseAccountBalance: IPurchaseAccountBalance) {
     this.editForm.patchValue({
       id: purchaseAccountBalance.id,
       balance: purchaseAccountBalance.balance,
-      location: purchaseAccountBalance.location
+      location: purchaseAccountBalance.location,
+      transactionType: purchaseAccountBalance.transactionType
     });
   }
 
@@ -71,7 +84,8 @@ export class PurchaseAccountBalanceUpdateComponent implements OnInit {
       ...new PurchaseAccountBalance(),
       id: this.editForm.get(['id']).value,
       balance: this.editForm.get(['balance']).value,
-      location: this.editForm.get(['location']).value
+      location: this.editForm.get(['location']).value,
+      transactionType: this.editForm.get(['transactionType']).value
     };
   }
 
@@ -92,6 +106,10 @@ export class PurchaseAccountBalanceUpdateComponent implements OnInit {
   }
 
   trackLocationById(index: number, item: ILocation) {
+    return item.id;
+  }
+
+  trackTransactionTypeById(index: number, item: ITransactionType) {
     return item.id;
   }
 }

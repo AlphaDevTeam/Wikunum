@@ -66,6 +66,10 @@ public class SupplierAccountBalance implements Serializable {
         this.balance = balance;
     }
 
+    public void addBalance(BigDecimal balance) {
+        this.balance = this.balance.add(balance);
+    }
+
     public Location getLocation() {
         return location;
     }

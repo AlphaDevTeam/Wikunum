@@ -92,6 +92,10 @@ public class PurchaseAccountBalanceQueryService extends QueryService<PurchaseAcc
                 specification = specification.and(buildSpecification(criteria.getLocationId(),
                     root -> root.join(PurchaseAccountBalance_.location, JoinType.LEFT).get(Location_.id)));
             }
+            if (criteria.getTransactionTypeId() != null) {
+                specification = specification.and(buildSpecification(criteria.getTransactionTypeId(),
+                    root -> root.join(PurchaseAccountBalance_.transactionType, JoinType.LEFT).get(TransactionType_.id)));
+            }
         }
         return specification;
     }

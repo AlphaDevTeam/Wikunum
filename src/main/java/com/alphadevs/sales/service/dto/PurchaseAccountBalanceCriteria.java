@@ -31,6 +31,8 @@ public class PurchaseAccountBalanceCriteria implements Serializable, Criteria {
 
     private LongFilter locationId;
 
+    private LongFilter transactionTypeId;
+
     public PurchaseAccountBalanceCriteria(){
     }
 
@@ -38,6 +40,7 @@ public class PurchaseAccountBalanceCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.balance = other.balance == null ? null : other.balance.copy();
         this.locationId = other.locationId == null ? null : other.locationId.copy();
+        this.transactionTypeId = other.transactionTypeId == null ? null : other.transactionTypeId.copy();
     }
 
     @Override
@@ -69,6 +72,14 @@ public class PurchaseAccountBalanceCriteria implements Serializable, Criteria {
         this.locationId = locationId;
     }
 
+    public LongFilter getTransactionTypeId() {
+        return transactionTypeId;
+    }
+
+    public void setTransactionTypeId(LongFilter transactionTypeId) {
+        this.transactionTypeId = transactionTypeId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -82,7 +93,8 @@ public class PurchaseAccountBalanceCriteria implements Serializable, Criteria {
         return
             Objects.equals(id, that.id) &&
             Objects.equals(balance, that.balance) &&
-            Objects.equals(locationId, that.locationId);
+            Objects.equals(locationId, that.locationId) &&
+            Objects.equals(transactionTypeId, that.transactionTypeId);
     }
 
     @Override
@@ -90,7 +102,8 @@ public class PurchaseAccountBalanceCriteria implements Serializable, Criteria {
         return Objects.hash(
         id,
         balance,
-        locationId
+        locationId,
+        transactionTypeId
         );
     }
 
@@ -100,6 +113,7 @@ public class PurchaseAccountBalanceCriteria implements Serializable, Criteria {
                 (id != null ? "id=" + id + ", " : "") +
                 (balance != null ? "balance=" + balance + ", " : "") +
                 (locationId != null ? "locationId=" + locationId + ", " : "") +
+                (transactionTypeId != null ? "transactionTypeId=" + transactionTypeId + ", " : "") +
             "}";
     }
 

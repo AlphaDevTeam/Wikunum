@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 import { JhiAlertService } from 'ng-jhipster';
@@ -50,17 +50,26 @@ export class GoodsReceiptUpdateComponent implements OnInit {
     supplier: [null, Validators.required],
     location: [null, Validators.required],
     grnQty: [null, [Validators.required]],
-    item: [],
+    item: [null, Validators.required],
     storageBin: [],
     revisedItemCost: [],
     grn: [],
-    itemCost: []
+    itemCost: [null, Validators.required]
   });
 
-  editFormDetails = this.fb.group({});
+  editFormDetails = this.fb.group({
+    item: [null, [Validators.required]],
+    storageBin: [],
+    revisedItemCost: [],
+    grn: [],
+    itemCost: [null, [Validators.required]]
+  });
+
+  @ViewChild('item', { static: false }) itemField: ElementRef;
 
   constructor(
     protected jhiAlertService: JhiAlertService,
+    protected router: Router,
     protected goodsReceiptService: GoodsReceiptService,
     protected supplierService: SupplierService,
     protected locationService: LocationService,
@@ -101,7 +110,7 @@ export class GoodsReceiptUpdateComponent implements OnInit {
   }
 
   updateFormDetails(goodsReceiptDetails: IGoodsReceiptDetails) {
-    this.editForm.patchValue({
+    this.editFormDetails.patchValue({
       id: goodsReceiptDetails.id,
       grnQty: goodsReceiptDetails.grnQty,
       revisedItemCost: goodsReceiptDetails.revisedItemCost,
@@ -170,6 +179,12 @@ export class GoodsReceiptUpdateComponent implements OnInit {
     this.grnList.push(goodsReceiptDetails);
     this.virtualGoodsReceipts = this.grnList;
     this.debug = 'Debug : ' + JSON.stringify(goodsReceiptDetails);
+
+    // Clear Item related form and set focus
+    this.editForm.get(['grnQty']).reset();
+    this.editForm.get(['revisedItemCost']).reset();
+    this.editForm.get(['item']).reset();
+    this.itemField.nativeElement.focus();
   }
 
   updateList(id: number, property: string, event: any) {
@@ -194,12 +209,12 @@ export class GoodsReceiptUpdateComponent implements OnInit {
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IGoodsReceipt>>) {
-    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+    result.subscribe((res: HttpResponse<IGoodsReceipt>) => this.onSaveSuccess(res.body), () => this.onSaveError());
   }
 
-  protected onSaveSuccess() {
+  protected onSaveSuccess(result) {
     this.isSaving = false;
-    this.previousState();
+    this.router.navigate(['goods-receipt/' + result.id + '/view']);
   }
 
   protected onSaveError() {
