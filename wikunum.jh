@@ -1,0 +1,496 @@
+
+/**
+ * Products Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity Products {
+	productCode String required,
+    productName String required,
+    productPrefix String required,
+//	productProfMargin Double required   
+}
+
+/**
+ * Designs Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity Designs {
+	designCode String required,
+    designName String required,
+    designPrefix String required,
+//	designProfMargin Double required  
+}
+
+/**
+ * Job Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity Job {
+	jobCode String required,
+    jobDescription String required,
+    jobStartDate LocalDate required,
+    jobEndDate LocalDate required,
+    jobAmount BigDecimal required,
+}
+
+/**
+ * Job Details Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity JobDetails {
+	jobItemPrice BigDecimal required,
+    jobItemQty Double required
+}
+
+
+/**
+ * Job Status Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity JobStatus {
+	jobStatusCode String required,
+    jobStatusDescription String required,
+	isActive Boolean required
+}
+
+
+
+/**
+ * Items Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity Items {
+	itemCode String required,
+    itemName String required,
+    itemDescription String required,
+	itemPrice BigDecimal ,  
+    itemSerial String required,
+    itemSupplierSerial String,
+    itemCost BigDecimal required,
+    originalStockDate LocalDate required,
+    modifiedStockDate LocalDate required,
+    image ImageBlob
+}
+
+/**
+ * ItemBinCard Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity ItemBinCard {
+	transactionDate LocalDate required,
+    transactionDescription String required,
+    transactionQty Double required,
+    transactionBalance BigDecimal required
+}
+
+/**
+ * PurchaseOrder Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity PurchaseOrder {
+	poNumber String required,
+    poDate LocalDate required,
+}
+
+/**
+ * PurchaseOrderDetails Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity PurchaseOrderDetails {
+	itemQty Double required,
+}
+
+
+
+/**
+ * GRN Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity GoodsReceipt {
+	grnNumber String required,
+    grnDate LocalDate required,
+    poNumber String ,
+}
+
+/**
+ * GRN Details Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity GoodsReceiptDetails {
+	grnQty String required,
+    revisedItemCost BigDecimal
+}
+
+
+/**
+ * StorageBin Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity StorageBin {
+	binNumber String required,
+    binDescription String required,
+}
+
+/**
+ * UnitOfMeasurements Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity UnitOfMeasurements {
+	uomCode String required,
+    uomDescription String required
+}
+
+
+/**
+ * Currency Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity Currency {
+	currencyCode String required,
+    currencyName String required,
+}
+
+/**
+ * DocumentNumberConfig Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity DocumentNumberConfig {
+	documentPrefix String required,
+    documentPostfix String,
+    currentNumber Double required
+}
+
+/**
+ * UserPermissions Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity UserPermissions {
+	userPermKey String,
+    userPermDescription String,
+	isActive Boolean	
+}
+
+/**
+ * UserGroups Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity UserGroups {
+	groupName String required,
+}
+
+/**
+ * MenuItems Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity MenuItems {
+	menuName String required,
+    menuURL String required,
+    isActive Boolean
+}
+
+
+/**
+ * CashBook Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity CashBook {
+	transactionDate LocalDate required,
+    transactionDescription String required,
+    transactionAmountDR BigDecimal required,
+    transactionAmountCR BigDecimal required,
+    transactionBalance BigDecimal required
+}
+
+/**
+ * CashBook Balance Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity CashBookBalance {
+	balance BigDecimal required
+}
+
+
+/**
+ * CustomerAccount Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity CustomerAccount {
+	transactionDate LocalDate required,
+    transactionDescription String required,
+    transactionAmountDR BigDecimal required,
+    transactionAmountCR BigDecimal required,
+    transactionBalance BigDecimal required
+}
+
+/**
+ * CustomerAccount Balance Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity CustomerAccountBalance {
+	balance BigDecimal required
+}
+
+
+/**
+ * SupplierAccount Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity SupplierAccount {
+	transactionDate LocalDate required,
+    transactionDescription String required,
+    transactionAmountDR BigDecimal required,
+    transactionAmountCR BigDecimal required,
+    transactionBalance BigDecimal required
+}
+
+/**
+ * SupplierAccount Balance Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity SupplierAccountBalance {
+	balance BigDecimal required
+}
+
+/**
+ * PurchaseAccount Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity PurchaseAccount {
+	transactionDate LocalDate required,
+    transactionDescription String required,
+    transactionAmountDR BigDecimal required,
+    transactionAmountCR BigDecimal required,
+    transactionBalance BigDecimal required
+}
+
+/**
+ * PurchaseAccount Balance Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity PurchaseAccountBalance {
+	balance BigDecimal required
+}
+
+
+/**
+ * Sales Account Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity SalesAccount {
+	transactionDate LocalDate required,
+    transactionDescription String required,
+    transactionAmountDR BigDecimal required,
+    transactionAmountCR BigDecimal required,
+    transactionBalance BigDecimal required
+}
+
+/**
+ * Sales Account Balance Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity SalesAccountBalance {
+	balance BigDecimal required
+}
+
+
+/**
+ * DocumentType Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity DocumentType {
+	documentTypeCode String required,
+    documentType String required
+}
+
+/**
+ * TransactionType Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity TransactionType {
+	transactionypeCode String required,
+    transactionType String required,
+    isActive Boolean,
+}
+
+
+/**
+ * Location Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity Location {
+	locationCode String required,
+    locationName String required,
+    isActive Boolean,
+}
+
+
+/**
+ * Customer Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity Customer {
+	customerCode String required,
+    customerName String required,
+    customerCreditLimit BigDecimal required,
+    isActive Boolean,    
+}
+
+/**
+ * Supplier Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity Supplier {
+	supplierCode String required,
+    supplierName String required,
+    supplierCreditLimit BigDecimal required,
+    isActive Boolean,    
+}
+
+/**
+ * Worker Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity Worker {
+	workerCode String required,
+    workerName String required,
+    workerLimit BigDecimal,
+    isActive Boolean,    
+}
+
+
+/**
+ * Extra User Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity ExUser {
+	userKey String required,
+}
+
+
+/**
+ * Customer Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity Stock {
+	stockQty Double required,
+}
+
+
+/**
+ * Company Entity.
+ * @author Mihindu Karunarathne.
+ */
+entity Company {
+	companyCode String required,
+    companyName String required,
+    companyRegNumber String required,
+}
+
+relationship ManyToOne {
+  Designs{relatedProduct required} to Products ,
+  Designs{location required } to Location,
+  
+  Products{location required} to Location,
+  
+  Items{relatedDesign required} to Designs,
+  Items{relatedProduct required} to Products,
+  Items{location required} to Location,
+  Items{UnitOfMeasurements required} to UnitOfMeasurements,
+  Items{Currency required} to Currency
+  
+  ItemBinCard{location required} to Location,
+  ItemBinCard{item required} to Items,
+  
+  Stock{item required} to Items,
+  Stock{location required} to Location,
+  Stock{company required} to Company,
+  
+  PurchaseOrderDetails{item required} to Items,
+  GoodsReceiptDetails{item required} to Items,
+  GoodsReceiptDetails{storageBin} to StorageBin,
+  JobDetails{item required} to Items,
+  
+  CashBook{location required} to Location,
+  CashBook{transactionType required} to TransactionType,
+  
+  CashBookBalance{location required} to Location,
+
+  CustomerAccount{location required} to Location,
+  CustomerAccount{transactionType required} to TransactionType,
+  CustomerAccount{customer required} to Customer,
+  
+  CustomerAccountBalance{location required} to Location,
+
+  SupplierAccount{location required} to Location,
+  SupplierAccount{transactionType required} to TransactionType,
+  SupplierAccount{supplier required} to Supplier,
+  
+  SupplierAccount{location required} to Location,
+
+  PurchaseAccount{location required} to Location,
+  PurchaseAccount{transactionType required} to TransactionType,
+  
+  PurchaseAccountBalance{location required} to Location,
+  
+  SalesAccount{location required} to Location,
+  SalesAccount{transactionType required} to TransactionType,
+  
+  SalesAccountBalance{location required} to Location,
+
+  PurchaseOrder{supplier required} to Supplier,
+  PurchaseOrder{location required} to Location,
+  //PurchaseOrder{company} to Company,
+  
+  GoodsReceipt{supplier required} to Supplier,
+  GoodsReceipt{location required} to Location,
+  //GoodsReceipt{company} to Company,
+  
+  Job{location required} to Location,
+  //Job{company} to Company,
+  Job{customer required} to Customer,
+  
+  Location{company required} to Company,
+  
+  Customer{location required} to Location,
+  Worker{location required} to Location,
+  JobStatus{location required} to Location,
+  Supplier{location required} to Location,
+  DocumentNumberConfig{document required} to DocumentType,
+  DocumentNumberConfig{location required} to Location,
+}
+relationship OneToMany{
+  PurchaseOrder{details required} to PurchaseOrderDetails{po required},
+  GoodsReceipt{details required} to GoodsReceiptDetails{grn required},
+  Job{details required} to JobDetails{job required},
+  GoodsReceipt{linkedPOs required} to PurchaseOrder{relatedGRN}, 
+}
+
+relationship OneToOne{
+	ExUser{relatedUser} to User{exUser},    
+    Job{status required} to JobStatus,       
+    ExUser{company required} to Company,  
+}
+
+relationship ManyToMany{
+	ExUser{locations required} to Location{users required}, 
+    ExUser{userGroups} to UserGroups{users},
+    ExUser{userPermissions} to UserPermissions{userPermissions},
+    Job{assignedTo required} to Worker{jobs required},
+    UserPermissions{menuItems required} to MenuItems{userPermission},
+  	UserGroups{userPermissions required} to UserPermissions{UserGroups}  
+  
+}
+
+// Set pagination options
+paginate * with infinite-scroll
+//paginate * with pagination
+
+//dto * with mapstruct
+
+// Set service options to all except few
+//service all with serviceImpl except DocumentType
+service all with serviceClass
+
+filter * 
+// Set an angular suffix
+//angularSuffix * with alpha
